@@ -1,9 +1,9 @@
 const DependenciesSelector = () => {
-	return (
-		<>
-			<div>DependenciesSelector</div>
-		</>
-	);
+  return (
+    <>
+      <div>DependenciesSelector</div>
+    </>
+  );
 };
 
 export default DependenciesSelector;

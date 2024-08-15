@@ -1,9 +1,9 @@
 const SettingLoad = () => {
-	return (
-		<>
-			<div>SettingLoad</div>
-		</>
-	);
+  return (
+    <>
+      <div>SettingLoad</div>
+    </>
+  );
 };
 
 export default SettingLoad;

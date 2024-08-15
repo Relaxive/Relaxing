@@ -1,9 +1,9 @@
 const CancelModal = () => {
-	return (
-		<>
-			<div>CancelModal</div>
-		</>
-	);
+  return (
+    <>
+      <div>CancelModal</div>
+    </>
+  );
 };
 
 export default CancelModal;

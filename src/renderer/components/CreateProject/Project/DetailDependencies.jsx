@@ -1,9 +1,9 @@
 const DetailDependencies = () => {
-	return (
-		<>
-			<div>DetailDependencies</div>
-		</>
-	);
+  return (
+    <>
+      <div>DetailDependencies</div>
+    </>
+  );
 };
 
 export default DetailDependencies;

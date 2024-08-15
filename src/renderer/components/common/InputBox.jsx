@@ -1,9 +1,9 @@
 const InputBox = () => {
-	return (
-		<>
-			<input type="text" />
-		</>
-	);
+  return (
+    <>
+      <input type="text" />
+    </>
+  );
 };
 
 export default InputBox;

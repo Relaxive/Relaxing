@@ -1,5 +1,5 @@
 const ButtonBox = ({ Children }) => {
-	return <button>{Children}</button>;
+  return <button>{Children}</button>;
 };
 
 export default ButtonBox;

@@ -1,9 +1,9 @@
 const ProjectList = () => {
-	return (
-		<>
-			<div>ProjectList</div>
-		</>
-	);
+  return (
+    <>
+      <div>ProjectList</div>
+    </>
+  );
 };
 
 export default ProjectList;

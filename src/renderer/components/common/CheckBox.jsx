@@ -1,5 +1,5 @@
 const CheckBox = () => {
-	return <input type="checkbox" />;
+  return <input type="checkbox" />;
 };
 
 export default CheckBox;

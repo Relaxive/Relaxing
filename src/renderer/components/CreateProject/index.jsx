@@ -4,14 +4,14 @@ import ProjectStarter from "@components/CreateProject/Project/ProjectStarter";
 import SettingLoad from "@components/CreateProject/Project/SettingLoad";
 
 const CreateProject = () => {
-	return (
-		<>
-			<SettingLoad />
-			<ProjectStarter />
-			<DependenciesSelector />
-			<DetailDependencies />
-		</>
-	);
+  return (
+    <>
+      <SettingLoad />
+      <ProjectStarter />
+      <DependenciesSelector />
+      <DetailDependencies />
+    </>
+  );
 };
 
 export default CreateProject;
