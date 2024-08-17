@@ -3,22 +3,22 @@ import ButtonBox from "@components/common/ButtonBox";
 import { ModalBackground, ModalContainer } from "@public/style/Modal.styles";
 
 const ErrorModal = ({ message }) => {
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
-	const handleClose = () => {
-		navigate(-1);
-	};
+  const handleClose = () => {
+    navigate(-1);
+  };
 
-	return (
-		<ModalBackground onClick={handleClose}>
-			<ModalContainer className="small" onClick={e => e.stopPropagation()}>
-				<p className="error-message">{message}</p>
-				<ButtonBox variant="default" onClick={handleClose}>
-					Close
-				</ButtonBox>
-			</ModalContainer>
-		</ModalBackground>
-	);
+  return (
+    <ModalBackground onClick={handleClose}>
+      <ModalContainer className="small" onClick={e => e.stopPropagation()}>
+        <p className="error-message">{message}</p>
+        <ButtonBox variant="default" onClick={handleClose}>
+          Close
+        </ButtonBox>
+      </ModalContainer>
+    </ModalBackground>
+  );
 };
 
 export default ErrorModal;
