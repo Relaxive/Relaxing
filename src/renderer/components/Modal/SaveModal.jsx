@@ -111,14 +111,14 @@ const SaveModal = ({ onSave, onCreate, onCancel }) => {
         </div>
 
         <div className="button-group">
-          <ButtonBox $variant="default" onClick={onCancel}>
+          <ButtonBox variant="default" onClick={onCancel}>
             취소
           </ButtonBox>
           <div className="save-button">
-            <ButtonBox $variant="active" onClick={onCreate}>
+            <ButtonBox variant="active" onClick={onCreate}>
               생성
             </ButtonBox>
-            <ButtonBox $variant="default" onClick={onSave}>
+            <ButtonBox variant="default" onClick={onSave}>
               저장
             </ButtonBox>
           </div>
