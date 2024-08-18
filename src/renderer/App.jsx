@@ -13,6 +13,18 @@ import DashboardLayout from "@components/Layout/DashboardLayout";
 import PrivateLayout from "@components/Layout/PrivateLayout";
 
 function App() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+
+  const showModal = message => {
+    setModalMessage(message);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <Router>
       <Routes>
@@ -22,12 +34,23 @@ function App() {
           <Route path="my-dependencies" element={<DependencyInstall />} />
         </Route>
         <Route path="project" element={<PrivateLayout />}>
-          <Route index element={<ProjectList />} />
-          <Route path="project-list" element={<ProjectList />} />
+          <Route index element={<ProjectList showModal={showModal} />} />
+          <Route
+            path="project-list"
+            element={<ProjectList showModal={showModal} />}
+          />
           <Route path="create-project" element={<CreateProject />} />
         </Route>
-        <Route path="*" element={<ErrorModal />} />
+
+        <Route
+          path="*"
+          element={<ErrorModal message="Page not found" onClose={closeModal} />}
+        />
       </Routes>
+
+      {isModalOpen && (
+        <ErrorModal message={modalMessage} onClose={closeModal} />
+      )}
     </Router>
   );
 }
