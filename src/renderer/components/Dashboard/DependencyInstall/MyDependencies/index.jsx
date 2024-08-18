@@ -29,6 +29,26 @@ const dummyDependency = [
     packageName: "electron-squirrel-startup",
     currentVersion: "1.0.1",
     latestVersion: "1.0.1"
+  },
+  {
+    packageName: "electron-squirrel-startup",
+    currentVersion: "1.0.1",
+    latestVersion: "1.0.1"
+  },
+  {
+    packageName: "electron-squirrel-startup",
+    currentVersion: "1.0.1",
+    latestVersion: "1.0.1"
+  },
+  {
+    packageName: "electron-squirrel-startup",
+    currentVersion: "1.0.1",
+    latestVersion: "1.0.1"
+  },
+  {
+    packageName: "electron-squirrel-startup",
+    currentVersion: "1.0.1",
+    latestVersion: "1.0.1"
   }
 ];
 
@@ -52,17 +72,13 @@ const MyDependencies = () => {
 
   const renderDependencies = dependencies => {
     return (
-      <ul className="dependencies-list">
+      <>
         {dependencies.map(dependency => (
-          <li className="package" key={dependency.packageName}>
-            <span className="package-name">{dependency.packageName}</span>
+          <li key={dependency.packageName}>
+            <span>{dependency.packageName}</span>
             <div className="version-container">
-              <span className="package-current-version">
-                현재 버전 {dependency.currentVersion}
-              </span>
-              <span className="package-latest-version">
-                최신 버전 {dependency.latestVersion}
-              </span>
+              <span>현재 버전 {dependency.currentVersion}</span>
+              <span>최신 버전 {dependency.latestVersion}</span>
             </div>
             <button>
               <img
@@ -76,42 +92,36 @@ const MyDependencies = () => {
             </button>
           </li>
         ))}
-      </ul>
+      </>
     );
   };
 
   return (
     <MyDependenciesContainer>
-      <div className="tabs">
-        <div className="tab-menu">
+      <ul>
+        <li>
           <button
-            className={`tab-link ${activeTab === "dependencies" ? "active" : ""}`}
+            className={`${activeTab === "dependencies" ? "active" : ""}`}
             onClick={() => handleActiveTab("dependencies")}
           >
             dependencies
           </button>
           <button
-            className={`tab-link ${activeTab === "devDependencies" ? "active" : ""}`}
+            className={`${activeTab === "devDependencies" ? "active" : ""}`}
             onClick={() => handleActiveTab("devDependencies")}
           >
             devDependencies
           </button>
-        </div>
-        {activeTab === "dependencies" && (
-          <div className="tab-content active">
-            <div className="dependencies-list-container">
-              {renderDependencies(dummyDependency)}
-            </div>
-          </div>
-        )}
-        {activeTab === "devDependencies" && (
-          <div className="tab-content active">
-            <div className="dependencies-list-container">
-              {renderDependencies(dummyDevDependency)}
-            </div>
-          </div>
-        )}
-      </div>
+        </li>
+        <li>
+          {activeTab === "dependencies" && (
+            <ul>{renderDependencies(dummyDependency)}</ul>
+          )}
+          {activeTab === "devDependencies" && (
+            <ul>{renderDependencies(dummyDevDependency)}</ul>
+          )}
+        </li>
+      </ul>
     </MyDependenciesContainer>
   );
 };

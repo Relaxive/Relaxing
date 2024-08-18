@@ -1,12 +1,12 @@
 import { DependencyInstallContentContainer } from "@public/style/DependencyInstall.styles";
-import MyDependencies from "@components/DependencyInstall/MyDependencies";
-import NPMManager from "@components/DependencyInstall/MyDependencies/NPMManager";
+import MyDependencies from "@components/Dashboard/DependencyInstall/MyDependencies";
+import NPMManager from "@components/Dashboard/DependencyInstall/MyDependencies/NPMManager";
 
 const DependencyInstall = () => {
   return (
     <DependencyInstallContentContainer>
       <div className="my-dependencies">
-        <p>package.json</p>
+        <h1>package.json</h1>
         <MyDependencies />
       </div>
       <NPMManager />

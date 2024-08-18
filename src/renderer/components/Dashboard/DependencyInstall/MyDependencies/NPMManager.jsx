@@ -1,13 +1,12 @@
-import React, { useState, version } from "react";
+import { useState } from "react";
 import {
   NPMManagerContainer,
   InputContainer,
   PackageListContainer,
   PackageListItem,
-  ButtonContainer,
-  SearchButton,
-  InstallButton
+  ButtonContainer
 } from "@public/style/DependencyInstall.styles";
+import ButtonBox from "@components/common/ButtonBox";
 
 const dummyKeyword = [
   { name: "eslint", version: "9.9.0" },
@@ -30,7 +29,9 @@ const NPMManager = () => {
   const handleSearch = () => {
     if (searchQuery) {
       const filtered = dummyKeyword
-        .filter(pkg => pkg.name.includes(searchQuery))
+        .filter(pkg =>
+          pkg.name.toLowerCase().includes(searchQuery.toLowerCase())
+        )
         .map(pkg => `${pkg.name} ${pkg.version || ""}`);
 
       setPackageItems(filtered);
@@ -55,12 +56,15 @@ const NPMManager = () => {
       </InputContainer>
 
       {packageItems.length > 0 && (
-        <div className="search-list">
+        <>
           <PackageListContainer>
             {packageItems.map(packageItem => (
               <PackageListItem
                 onClick={() => handleSearchKeywordClick(packageItem)}
-                isSelected={packageItem === selectedPackageItem}
+                className={
+                  packageItem === selectedPackageItem ? "selected" : ""
+                }
+                key={packageItem}
               >
                 {packageItem}
               </PackageListItem>
@@ -68,12 +72,17 @@ const NPMManager = () => {
           </PackageListContainer>
 
           <ButtonContainer>
-            <SearchButton onClick={handleSearch}>검색</SearchButton>
-            <InstallButton disabled={!selectedPackageItem}>
+            <ButtonBox variant="active" onClick={handleSearch}>
+              검색
+            </ButtonBox>
+            <ButtonBox
+              variant={selectedPackageItem ? "active" : "disabled"}
+              disabled={!selectedPackageItem}
+            >
               Install
-            </InstallButton>
+            </ButtonBox>
           </ButtonContainer>
-        </div>
+        </>
       )}
     </NPMManagerContainer>
   );
