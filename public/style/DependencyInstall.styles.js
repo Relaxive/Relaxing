@@ -163,7 +163,6 @@ export const InputContainer = styled.div.withConfig({
     background-color: ${({ theme }) => theme.colors.white};
     ${({ isEnterPressed }) => !isEnterPressed && commonBoxShadow};
 
-    // border-radius를 조건부로 설정
     border-bottom-left-radius: ${({ isEnterPressed }) =>
       isEnterPressed ? "0" : commonBorderRadius};
     border-bottom-right-radius: ${({ isEnterPressed }) =>
