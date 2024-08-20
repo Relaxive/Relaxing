@@ -19,36 +19,42 @@ const useProjectStore = create(set => ({
   isEnterPressed: false,
 
   setSelectedSettingOption: option =>
-    set(state => {
-      const isUserDefined = option === "userDefined";
-      return {
-        selectedSettingOption: option,
-        isUserDefinedSetting: isUserDefined
-      };
-    }),
+    set(state => ({
+      selectedSettingOption: option,
+      isUserDefinedSetting: option === "userDefined"
+    })),
 
   setPath: path => {
-    set({ path });
-    set(state => ({
-      isProjectStarterValid:
-        !!state.path && !!state.selectedPackageManager && !!state.projectName
-    }));
+    set(state => {
+      const isProjectStarterValid =
+        !!path && !!state.selectedPackageManager && !!state.projectName;
+      return {
+        path,
+        isProjectStarterValid
+      };
+    });
   },
 
   setSelectedPackageManager: selectedPackageManager => {
-    set({ selectedPackageManager });
-    set(state => ({
-      isProjectStarterValid:
-        !!state.path && !!state.selectedPackageManager && !!state.projectName
-    }));
+    set(state => {
+      const isProjectStarterValid =
+        !!state.path && !!selectedPackageManager && !!state.projectName;
+      return {
+        selectedPackageManager,
+        isProjectStarterValid
+      };
+    });
   },
 
   setProjectName: projectName => {
-    set({ projectName });
-    set(state => ({
-      isProjectStarterValid:
-        !!state.path && !!state.selectedPackageManager && !!state.projectName
-    }));
+    set(state => {
+      const isProjectStarterValid =
+        !!state.path && !!state.selectedPackageManager && !!projectName;
+      return {
+        projectName,
+        isProjectStarterValid
+      };
+    });
   },
 
   setFiles: files => set({ files }),
@@ -58,12 +64,6 @@ const useProjectStore = create(set => ({
 
   setDependenciesSelected: isSelected =>
     set({ isDependenciesSelected: isSelected }),
-
-  validateProjectStarter: () =>
-    set(state => ({
-      isProjectStarterValid:
-        !!state.path && !!state.selectedPackageManager && !!state.projectName
-    })),
 
   setSearchQuery: query => set({ searchQuery: query }),
   setPackageItems: items => set({ packageItems: items }),
