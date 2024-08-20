@@ -39,12 +39,18 @@ const useProjectStore = create(set => ({
 
   setPath: path => set(state => updateState(set, state, "path", path)),
   setSelectedPackageManager: selectedPackageManager =>
-    set(state => updateState(set, state, "selectedPackageManager", selectedPackageManager)),
-  setProjectName: projectName => set(state => updateState(set, state, "projectName", projectName)),
+    set(state =>
+      updateState(set, state, "selectedPackageManager", selectedPackageManager)
+    ),
+  setProjectName: projectName =>
+    set(state => updateState(set, state, "projectName", projectName)),
 
   setFiles: files => set({ files }),
-  setUserDefinedSetting: isUserDefined => set({ isUserDefinedSetting: isUserDefined }),
-  setDependenciesSelected: isSelected => set({ isDependenciesSelected: isSelected }),
+  setUserDefinedSetting: isUserDefined =>
+    set({ isUserDefinedSetting: isUserDefined }),
+  setDependenciesSelected: isSelected =>
+    set({ isDependenciesSelected: isSelected }),
+
   setSearchQuery: query => set({ searchQuery: query }),
   setPackageItems: items => set({ packageItems: items }),
   setSelectedPackageItem: item => set({ selectedPackageItem: item }),
