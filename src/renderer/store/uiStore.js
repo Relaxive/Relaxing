@@ -50,22 +50,24 @@ const useUIStore = create(set => ({
     }),
 
   setSwitchToggle: value => set({ switchToggle: value }),
-
   setActiveTab: tabName => set({ activeTab: tabName }),
 
   resetUIState: () =>
-    set({
-      isModalOpen: false,
-      activeModal: null,
-      modalMessage: "",
-      sections: {
+    set(state => {
+      const initialSections = {
         showSettingLoad: true,
         showProjectStarter: false,
         showDependenciesSelector: false,
         showDetailDependencies: false
-      },
-      switchToggle: false,
-      activeTab: "dependencies"
+      };
+
+      return {
+        ...state,
+        sections: initialSections,
+        switchToggle: false,
+        activeTab: "dependencies",
+        ...state.closeModal()
+      };
     })
 }));
 
