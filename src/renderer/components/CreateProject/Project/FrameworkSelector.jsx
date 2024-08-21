@@ -9,11 +9,17 @@ import {
 import useProjectStore from "@/store/projectStore";
 import mockData from "@utils/mockData.json";
 
-const FrameworkSelector = ({
-  selectedFrameworkIndex,
-  setSelectedFrameworkIndex
-}) => {
-  const { setFrameworksSelected } = useProjectStore();
+const FrameworkSelector = () => {
+  const {
+    selectedFrameworkIndex,
+    setSelectedFrameworkIndex,
+    setFrameworksSelected
+  } = useProjectStore(state => ({
+    selectedFrameworkIndex: state.selectedFrameworkIndex,
+    setSelectedFrameworkIndex: state.setSelectedFrameworkIndex,
+    setFrameworksSelected: state.setFrameworksSelected
+  }));
+
   const dependencies = mockData.frameworkSelector;
 
   const handleCheckboxChange = index => {
@@ -36,7 +42,7 @@ const FrameworkSelector = ({
             <Checkbox
               checked={selectedFrameworkIndex === index}
               onChange={() => handleCheckboxChange(index)}
-              id={`checkbox-${index}`}
+              id={`checkbox-framework-${index}`}
             />
           </ControlContainer>
         </SelectorItem>

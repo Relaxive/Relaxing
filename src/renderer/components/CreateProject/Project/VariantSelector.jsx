@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Checkbox from "@components/common/CheckBox";
 import {
   SelectorContainer,
@@ -6,11 +5,21 @@ import {
   ControlContainer,
   TextContainer
 } from "@public/style/Project.styles";
+import useProjectStore from "@/store/projectStore";
 import mockData from "@utils/mockData.json";
 
-const VariantSelector = ({ selectedFrameworkIndex }) => {
+const VariantSelector = () => {
+  const {
+    selectedFrameworkIndex,
+    selectedOptionIndex,
+    setSelectedOptionIndex
+  } = useProjectStore(state => ({
+    selectedFrameworkIndex: state.selectedFrameworkIndex,
+    selectedOptionIndex: state.selectedOptionIndex,
+    setSelectedOptionIndex: state.setSelectedOptionIndex
+  }));
+
   const variants = mockData.frameworkSelector;
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
 
   if (selectedFrameworkIndex === null) {
     return <div>Please select a framework first.</div>;
