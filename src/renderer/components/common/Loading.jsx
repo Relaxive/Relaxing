@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
+import useUIStore from "@/store/uiStore";
 
 const spin = keyframes`
   0% {
@@ -38,22 +39,27 @@ const LoadingText = styled.div`
 `;
 ``;
 const Loading = () => {
-  const messages = ["프로젝트를 생성중 입니다....", "Vite Create Project..."];
-
-  const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+  const {
+    loading: { loadingMessages, currentLoadingMessageIndex },
+    updateLoadingMessageIndex,
+    resetLoadingMessageIndex
+  } = useUIStore();
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setCurrentMessageIndex(prevIndex => (prevIndex + 1) % messages.length);
+      updateLoadingMessageIndex();
     }, 2000);
 
-    return () => clearInterval(intervalId);
-  }, []);
+    return () => {
+      clearInterval(intervalId);
+      resetLoadingMessageIndex();
+    };
+  }, [updateLoadingMessageIndex, resetLoadingMessageIndex]);
 
   return (
     <LoadingContainer>
       <Spinner />
-      <LoadingText>{messages[currentMessageIndex]}</LoadingText>
+      <LoadingText>{loadingMessages[currentLoadingMessageIndex]}</LoadingText>
     </LoadingContainer>
   );
 };
