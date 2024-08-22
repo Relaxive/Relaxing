@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { PageContentContainer } from "@public/style/Project.styles";
-import { useNavigation } from "@utils/common";
+import { useNavigation } from "@utils/projectUtils";
 import icons from "@public/images";
 import useUIStore from "@/store/uiStore";
 import useProjectStore from "@/store/projectStore";

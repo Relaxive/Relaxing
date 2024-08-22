@@ -16,35 +16,38 @@ const SettingLoad = () => {
     setSelectedSettingOption: state.setSelectedSettingOption
   }));
 
-  useEffect(() => {
-    const loadProjectLists = async () => {
-      try {
-        const projectData = await window.api.loadProjectList();
-        processProjectData(projectData);
-      } catch (error) {
-        console.error("프로젝트 리스트를 불러오는 중 오류가 발생했습니다:", error);
-      }
-    };
+  const extractUniqueCustomNames = projectData => {
+    if (!projectData?.length) return [];
+    return [
+      ...new Set(
+        projectData
+          .filter(
+            project =>
+              typeof project.custom?.customName === "string" &&
+              project.custom.customName.trim() !== "" &&
+              project.custom.customName !== "undefined"
+          )
+          .map(project => project.custom.customName)
+      )
+    ];
+  };
 
-    loadProjectLists();
-  }, [setCustomNames]);
-
-  const processProjectData = (projectData) => {
-    if (projectData && projectData.length > 0) {
-      const validCustomNames = projectData
-        .filter(
-          project =>
-            project.custom &&
-            project.custom.customName &&
-            project.custom.customName !== "undefined"
-        )
-        .map(project => project.custom.customName);
-
-      if (validCustomNames.length > 0) {
-        setCustomNames(validCustomNames);
-      }
+  const loadProjectLists = async () => {
+    try {
+      const projectData = await window.api.loadProjectList();
+      const uniqueCustomNames = extractUniqueCustomNames(projectData);
+      setCustomNames(uniqueCustomNames);
+    } catch (error) {
+      console.error(
+        "프로젝트 리스트를 불러오는 중 오류가 발생했습니다:",
+        error
+      );
     }
   };
+
+  useEffect(() => {
+    loadProjectLists();
+  }, [setCustomNames]);
 
   const handleChange = e => {
     setSelectedSettingOption(e.target.value);

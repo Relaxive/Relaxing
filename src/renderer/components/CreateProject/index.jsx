@@ -1,5 +1,12 @@
 import { useEffect } from "react";
-import { useNavigation } from "@utils/common";
+import {
+  useNavigation,
+  getUserDefinedSettings,
+  getSelectedProjectSettings,
+  createProjectWithSettings,
+  setupProjectEnvironment,
+  processProjectData
+} from "@utils/projectUtils";
 import {
   PageContentContainer,
   ButtonContainer
@@ -129,31 +136,7 @@ const CreateProject = () => {
     ) {
       try {
         const projectData = await window.api.loadProjectList();
-
-        if (Array.isArray(projectData)) {
-          const selectedProject = projectData.find(
-            project => project.custom.customName === selectedSettingOption
-          );
-
-          if (selectedProject) {
-            const {
-              framework,
-              custom: { dependencies }
-            } = selectedProject;
-            const dependenciesList = dependencies.join(", ");
-            return {
-              type: "customSave",
-              message: `<p>${selectedSettingOption}</p><br/>프레임워크:${framework}<br/>의존성: ${dependenciesList}`
-            };
-          } else {
-            return {
-              type: "customSave",
-              message: `${selectedSettingOption}에 해당하는 프로젝트를 찾을 수 없습니다.`
-            };
-          }
-        } else {
-          throw new Error("프로젝트 데이터가 배열 형식이 아닙니다.");
-        }
+        return processProjectData(projectData, selectedSettingOption);
       } catch (error) {
         console.error("Error loading project data:", error);
         return {
@@ -162,10 +145,7 @@ const CreateProject = () => {
         };
       }
     }
-    // return {
-    //   type: "customSave",
-    //   message: `${selectedSettingOption}`
-    // };
+
     return null;
   };
 
@@ -203,34 +183,94 @@ const CreateProject = () => {
     }
   };
 
-  const handleConfirmCreate = async customName => {
-    const framework = variantName
-      ? `${frameworkName}-${variantName}`
-      : frameworkName;
+  // const handleConfirmCreate = async customName => {
+  //   const framework = variantName
+  //     ? `${frameworkName}-${variantName}`
+  //     : frameworkName;
 
+  //   try {
+  //     setLoading(true);
+  //     await window.api.installProject({
+  //       projectName,
+  //       path,
+  //       framework,
+  //       variant: variantName ? [variantName] : ["undefined"],
+  //       customName
+  //     });
+
+  //     if (selectedDependenciesIndex.length > 0) {
+  //       const selectedDependencies = selectedDependenciesIndex.map(
+  //         index => optionConfig.dependenciesSelector[index].name
+  //       );
+  //       await window.api.installDependencies({
+  //         projectName,
+  //         path,
+  //         dependencies: selectedDependencies
+  //       });
+  //     }
+  //     const projectPath = await window.api.joinProjectPath(path, projectName);
+  //     const projectFolderStructure =
+  //       await window.api.readAllDirectory(projectPath);
+
+  //     setFolderStructure({
+  //       name: projectName,
+  //       type: "folder",
+  //       children: projectFolderStructure
+  //     });
+
+  //     setProjectPath(projectPath);
+
+  //     resetState();
+  //     closeModal();
+  //     navigateToPath(`/dashboard/${projectName}`);
+  //   } catch (error) {
+  //     console.error(error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  const handleConfirmCreate = async customName => {
     try {
       setLoading(true);
-      await window.api.installProject({
+
+      const projectSettings =
+        selectedSettingOption === "userDefined"
+          ? getUserDefinedSettings(
+              frameworkName,
+              variantName,
+              selectedDependenciesIndex,
+              optionConfig,
+              customName
+            )
+          : await getSelectedProjectSettings(
+              customName,
+              window.api.loadProjectList
+            );
+
+      if (
+        !projectSettings.framework ||
+        !projectSettings.variant ||
+        projectSettings.dependencies === undefined
+      ) {
+        console.error("해당하는 프로젝트 데이터를 찾을 수 없습니다.");
+        return;
+      }
+
+      // 프로젝트 이름과 경로를 콘솔에 출력
+      console.log("프로젝트 이름:", projectName);
+      console.log("프로젝트 경로:", path);
+
+      await createProjectWithSettings({
+        ...projectSettings,
         projectName,
         path,
-        framework,
-        variant: variantName ? [variantName] : ["undefined"],
-        customName
+        installProject: window.api.installProject,
+        installDependencies: window.api.installDependencies
       });
 
-      if (selectedDependenciesIndex.length > 0) {
-        const selectedDependencies = selectedDependenciesIndex.map(
-          index => optionConfig.dependenciesSelector[index].name
-        );
-        await window.api.installDependencies({
-          projectName,
-          path,
-          dependencies: selectedDependencies
-        });
-      }
-      const projectPath = await window.api.joinProjectPath(path, projectName);
-      const projectFolderStructure =
-        await window.api.readAllDirectory(projectPath);
+      const { projectPath, projectFolderStructure } =
+        await setupProjectEnvironment(projectName, path, window.api);
 
       setFolderStructure({
         name: projectName,
@@ -239,12 +279,11 @@ const CreateProject = () => {
       });
 
       setProjectPath(projectPath);
-
       resetState();
       closeModal();
       navigateToPath(`/dashboard/${projectName}`);
     } catch (error) {
-      console.error(error);
+      console.error("프로젝트 생성 중 오류 발생:", error);
     } finally {
       setLoading(false);
     }
@@ -324,18 +363,20 @@ const CreateProject = () => {
 
       {isModalOpen &&
         (activeModal === "cancel" || activeModal === "customSave") && (
-          <>
-            <CancelCompleteModal
-              onSave={handleConfirmCancel}
-              onCancel={closeModal}
-              message={modalMessage}
-              subMessage={
-                activeModal === "cancel"
-                  ? "입력한 정보는 복구할 수 없습니다."
-                  : "프로젝트를 생성 하시겠습니까?"
-              }
-            />
-          </>
+          <CancelCompleteModal
+            onSave={
+              activeModal === "cancel"
+                ? handleConfirmCancel
+                : () => handleConfirmCreate(selectedSettingOption)
+            }
+            onCancel={closeModal}
+            message={modalMessage}
+            subMessage={
+              activeModal === "cancel"
+                ? "입력한 정보는 복구할 수 없습니다."
+                : "프로젝트를 생성 하시겠습니까?"
+            }
+          />
         )}
 
       {isModalOpen && activeModal === "save" && (
