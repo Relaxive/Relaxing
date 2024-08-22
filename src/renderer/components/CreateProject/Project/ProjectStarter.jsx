@@ -65,14 +65,23 @@ const ProjectStarter = () => {
   const handleProjectNameChange = event => {
     const inputValue = event.target.value;
     const validInput = inputValue.replace(/[^a-z0-9_-]/g, "");
+    const startsWithNumber = /^[0-9]/.test(validInput);
+    const maxLength = 214;
+    let errorMessage = "";
 
     if (inputValue !== validInput) {
-      setErrorMessage("영문 소문자, 숫자, -, _만 입력 가능합니다.");
-    } else {
-      setErrorMessage("");
+      errorMessage = "영문 소문자, 숫자, -, _만 입력 가능합니다.";
+    } else if (startsWithNumber) {
+      errorMessage = "숫자로 시작할 수 없습니다.";
+    } else if (validInput.length > maxLength) {
+      errorMessage = `최대 ${maxLength}자까지 가능합니다.`;
     }
 
-    setProjectName(validInput);
+    setErrorMessage(errorMessage);
+
+    if (!errorMessage) {
+      setProjectName(validInput);
+    }
   };
 
   const handlePackageManagerChange = event => {
