@@ -17,6 +17,7 @@ import ButtonBox from "@components/common/ButtonBox";
 import useUIStore from "@/store/uiStore";
 import useProjectStore from "@/store/projectStore";
 import mockData from "@utils/mockData.json";
+import useDashboardStore from "@/store/dashboardStore";
 
 const CreateProject = () => {
   const { navigateToPath } = useNavigation();
@@ -69,6 +70,10 @@ const CreateProject = () => {
     selectedOptionIndex: state.selectedOptionIndex,
     selectedVariantIndex: state.selectedVariantIndex,
     setSelectedVariantIndex: state.setSelectedVariantIndex
+  }));
+  const { setFolderStructure, setProjectPath } = useDashboardStore(state => ({
+    setFolderStructure: state.setFolderStructure,
+    setProjectPath: state.setProjectPath
   }));
 
   const resetState = () => {
@@ -183,10 +188,21 @@ const CreateProject = () => {
           dependencies: selectedDependencies
         });
       }
+      const projectPath = `${path}\\${projectName}`;
+      const projectFolderStructure =
+        await window.api.readAllDirectory(projectPath);
+
+      setFolderStructure({
+        name: projectName,
+        type: "folder",
+        children: projectFolderStructure
+      });
+
+      setProjectPath(projectPath);
 
       resetState();
       closeModal();
-      navigateToPath("/project/project-list");
+      navigateToPath(`/dashboard/${projectName}`);
     } catch (error) {
       console.error(error);
     } finally {
