@@ -16,7 +16,7 @@ import ToggleSection from "@components/common/ToggleSection";
 import ButtonBox from "@components/common/ButtonBox";
 import useUIStore from "@/store/uiStore";
 import useProjectStore from "@/store/projectStore";
-import mockData from "@utils/mockData.json";
+import optionConfig from "@utils/option.config";
 import useDashboardStore from "@/store/dashboardStore";
 
 const CreateProject = () => {
@@ -180,7 +180,7 @@ const CreateProject = () => {
 
       if (selectedDependenciesIndex.length > 0) {
         const selectedDependencies = selectedDependenciesIndex.map(
-          index => mockData.dependenciesSelector[index].name
+          index => optionConfig.dependenciesSelector[index].name
         );
         await window.api.installDependencies({
           projectName,
