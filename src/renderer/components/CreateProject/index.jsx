@@ -114,7 +114,7 @@ const CreateProject = () => {
       selectedOptionIndex !== null
   });
 
-  const getSaveMessage = () => {
+  const getSaveMessage = async () => {
     if (selectedSettingOption === "userDefined" && isSaveEnabled()) {
       return {
         type: "save",
@@ -127,11 +127,45 @@ const CreateProject = () => {
       !!selectedPackageManager &&
       !!projectName
     ) {
-      return {
-        type: "customSave",
-        message: "프로젝트를 생성 하시겠습니까?"
-      };
+      try {
+        const projectData = await window.api.loadProjectList();
+
+        if (Array.isArray(projectData)) {
+          const selectedProject = projectData.find(
+            project => project.custom.customName === selectedSettingOption
+          );
+
+          if (selectedProject) {
+            const {
+              framework,
+              custom: { dependencies }
+            } = selectedProject;
+            const dependenciesList = dependencies.join(", ");
+            return {
+              type: "customSave",
+              message: `<p>${selectedSettingOption}</p><br/>프레임워크:${framework}<br/>의존성: ${dependenciesList}`
+            };
+          } else {
+            return {
+              type: "customSave",
+              message: `${selectedSettingOption}에 해당하는 프로젝트를 찾을 수 없습니다.`
+            };
+          }
+        } else {
+          throw new Error("프로젝트 데이터가 배열 형식이 아닙니다.");
+        }
+      } catch (error) {
+        console.error("Error loading project data:", error);
+        return {
+          type: "error",
+          message: "프로젝트 데이터를 불러오는 중 오류가 발생했습니다."
+        };
+      }
     }
+    // return {
+    //   type: "customSave",
+    //   message: `${selectedSettingOption}`
+    // };
     return null;
   };
 
@@ -162,8 +196,8 @@ const CreateProject = () => {
     }
   };
 
-  const handleSaveClick = () => {
-    const saveMessage = getSaveMessage();
+  const handleSaveClick = async () => {
+    const saveMessage = await getSaveMessage();
     if (saveMessage) {
       showModal(saveMessage.type, saveMessage.message);
     }
