@@ -76,14 +76,24 @@ const CreateProject = () => {
     resetProjectState();
   };
 
-  const isSaveEnabled = () =>
-    !!path &&
-    !!selectedPackageManager &&
-    !!projectName &&
-    isProjectStarterValid &&
-    isFrameworksSelected &&
-    selectedFrameworkIndex !== null &&
-    selectedOptionIndex !== null;
+  const isSaveEnabled = () => {
+    const areBasicFieldsValid =
+      !!path &&
+      !!selectedPackageManager &&
+      !!projectName &&
+      isProjectStarterValid;
+
+    if (selectedSettingOption === "userDefined") {
+      return (
+        areBasicFieldsValid &&
+        isFrameworksSelected &&
+        selectedFrameworkIndex !== null &&
+        selectedOptionIndex !== null
+      );
+    }
+
+    return areBasicFieldsValid;
+  };
 
   const isSectionVisible = () => ({
     showSettingLoad: true,
@@ -121,7 +131,8 @@ const CreateProject = () => {
   };
 
   useEffect(() => {
-    setSectionsVisibility(isSectionVisible());
+    const visibilitySettings = isSectionVisible();
+    setSectionsVisibility(visibilitySettings);
   }, [
     isUserDefinedSetting,
     isProjectStarterValid,
@@ -198,8 +209,8 @@ const CreateProject = () => {
         </ButtonBox>
         <ButtonBox
           onClick={handleSaveClick}
-          variant={isProjectStarterValid ? "active" : "disabled"}
-          disabled={!isProjectStarterValid}
+          variant={isSaveEnabled() ? "active" : "disabled"}
+          disabled={!isSaveEnabled()}
         >
           저장
         </ButtonBox>
@@ -277,6 +288,14 @@ const CreateProject = () => {
             onSave={closeModal}
             onCreate={handleConfirmCreate}
             onCancel={closeModal}
+            title="사용자 설정 저장"
+            description={
+              <>
+                의존성 설치 및 설정에 대한 정보가 저장됩니다. <br />
+                생성으로 선택할 경우 사용자 설정은 저장되지 않고, 프로젝트가
+                만들어집니다.
+              </>
+            }
           />
         </>
       )}
