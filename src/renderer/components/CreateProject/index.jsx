@@ -39,9 +39,13 @@ const CreateProject = () => {
     isFrameworksSelected,
     selectedSettingOption,
     selectedFrameworkIndex,
+    selectedOptionIndex,
+    selectedVariantIndex,
     setSelectedFrameworkIndex,
     selectedDependenciesIndex,
     selectedPackageManager,
+    setSelectedVariantIndex,
+    setSelectedOptionIndex,
     path,
     projectName,
     frameworkName,
@@ -60,7 +64,11 @@ const CreateProject = () => {
     resetProjectState: state.resetProjectState,
     isUserDefinedSetting: state.isUserDefinedSetting,
     selectedDependenciesIndex: state.selectedDependenciesIndex,
-    selectedFrameworkIndex: state.selectedFrameworkIndex
+    selectedFrameworkIndex: state.selectedFrameworkIndex,
+    setSelectedOptionIndex: state.setSelectedOptionIndex,
+    selectedOptionIndex: state.selectedOptionIndex,
+    selectedVariantIndex: state.selectedVariantIndex,
+    setSelectedVariantIndex: state.setSelectedVariantIndex
   }));
 
   const resetState = () => {
@@ -75,7 +83,7 @@ const CreateProject = () => {
     isProjectStarterValid &&
     isFrameworksSelected &&
     selectedFrameworkIndex !== null &&
-    selectedDependenciesIndex.length > 0;
+    selectedOptionIndex !== null;
 
   const isSectionVisible = () => ({
     showSettingLoad: true,
@@ -87,7 +95,8 @@ const CreateProject = () => {
       isUserDefinedSetting &&
       isProjectStarterValid &&
       isFrameworksSelected &&
-      selectedFrameworkIndex !== null
+      selectedFrameworkIndex !== null &&
+      selectedOptionIndex !== null
   });
 
   const getSaveMessage = () => {
@@ -97,7 +106,12 @@ const CreateProject = () => {
         message:
           "의존성 설치 및 설정에 대한 정보가 저장됩니다. 생성으로 선택할경우 사용자 설정은 저장되지않고, 프로젝트가 만들어집니다."
       };
-    } else if (isProjectStarterComplete) {
+    } else if (
+      selectedSettingOption !== "userDefined" &&
+      !!path &&
+      !!selectedPackageManager &&
+      !!projectName
+    ) {
       return {
         type: "customSave",
         message: "프로젝트를 생성 하시겠습니까?"
@@ -113,6 +127,8 @@ const CreateProject = () => {
     isProjectStarterValid,
     isFrameworksSelected,
     selectedFrameworkIndex,
+    selectedVariantIndex,
+    selectedOptionIndex,
     setSectionsVisibility
   ]);
 
@@ -208,10 +224,7 @@ const CreateProject = () => {
           title="Framework Selector"
           isActive={sections.showFrameworkSelector}
           onToggle={() => toggleSection("showFrameworkSelector")}
-          disabled={
-            !(!!path && !!selectedPackageManager && !!projectName) ||
-            selectedSettingOption !== "userDefined"
-          }
+          disabled={!sections.showFrameworkSelector}
         >
           <FrameworkSelector
             selectedFrameworkIndex={selectedFrameworkIndex}
@@ -222,21 +235,19 @@ const CreateProject = () => {
           title="Variant Selector"
           isActive={sections.showVariantSelector}
           onToggle={() => toggleSection("showVariantSelector")}
-          disabled={
-            selectedFrameworkIndex === null ||
-            selectedSettingOption !== "userDefined"
-          }
+          disabled={!sections.showVariantSelector}
         >
           <VariantSelector
             selectedFrameworkIndex={selectedFrameworkIndex}
-            setSelectedVariantIndex={setSelectedFrameworkIndex}
+            setSelectedVariantIndex={setSelectedVariantIndex}
+            setSelectedOptionIndex={setSelectedOptionIndex}
           />
         </ToggleSection>
         <ToggleSection
           title="Dependencies Selector"
           isActive={sections.showDependenciesSelector}
           onToggle={() => toggleSection("showDependenciesSelector")}
-          disabled={selectedSettingOption !== "userDefined"}
+          disabled={!sections.showDependenciesSelector}
         >
           <DependenciesSelector
             selectedDependenciesIndex={selectedDependenciesIndex}
