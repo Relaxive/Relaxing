@@ -183,53 +183,6 @@ const CreateProject = () => {
     }
   };
 
-  // const handleConfirmCreate = async customName => {
-  //   const framework = variantName
-  //     ? `${frameworkName}-${variantName}`
-  //     : frameworkName;
-
-  //   try {
-  //     setLoading(true);
-  //     await window.api.installProject({
-  //       projectName,
-  //       path,
-  //       framework,
-  //       variant: variantName ? [variantName] : ["undefined"],
-  //       customName
-  //     });
-
-  //     if (selectedDependenciesIndex.length > 0) {
-  //       const selectedDependencies = selectedDependenciesIndex.map(
-  //         index => optionConfig.dependenciesSelector[index].name
-  //       );
-  //       await window.api.installDependencies({
-  //         projectName,
-  //         path,
-  //         dependencies: selectedDependencies
-  //       });
-  //     }
-  //     const projectPath = await window.api.joinProjectPath(path, projectName);
-  //     const projectFolderStructure =
-  //       await window.api.readAllDirectory(projectPath);
-
-  //     setFolderStructure({
-  //       name: projectName,
-  //       type: "folder",
-  //       children: projectFolderStructure
-  //     });
-
-  //     setProjectPath(projectPath);
-
-  //     resetState();
-  //     closeModal();
-  //     navigateToPath(`/dashboard/${projectName}`);
-  //   } catch (error) {
-  //     console.error(error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const handleConfirmCreate = async customName => {
     try {
       setLoading(true);
@@ -256,10 +209,6 @@ const CreateProject = () => {
         console.error("해당하는 프로젝트 데이터를 찾을 수 없습니다.");
         return;
       }
-
-      // 프로젝트 이름과 경로를 콘솔에 출력
-      console.log("프로젝트 이름:", projectName);
-      console.log("프로젝트 경로:", path);
 
       await createProjectWithSettings({
         ...projectSettings,

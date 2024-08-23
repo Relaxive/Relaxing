@@ -23,9 +23,22 @@ const ProjectList = () => {
     loadProjectLists();
   }, [setProjects]);
 
-  const handleProjectClick = project => {
+  const handleProjectClick = async project => {
     if (checkProjectPath(project.path)) {
-      navigateToPath(`/dashboard/${project.id}`);
+      const projectPath = await window.api.joinProjectPath(
+        project.path,
+        project.projectName
+      );
+      const projectFolderStructure =
+        await window.api.readAllDirectory(projectPath);
+
+      if (!projectFolderStructure) {
+        console.error(
+          "Failed to load directory structure, the result is undefined."
+        );
+      }
+
+      navigateToPath(`/dashboard/${project.projectName}`);
     } else {
       showModal(`경로를 찾을 수 없습니다: ${project.path}`);
     }
