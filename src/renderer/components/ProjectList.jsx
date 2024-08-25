@@ -2,12 +2,10 @@ import { useEffect } from "react";
 import { PageContentContainer } from "@public/style/Project.styles";
 import { useNavigation } from "@utils/projectUtils";
 import icons from "@public/images";
-import useUIStore from "@/store/uiStore";
 import useProjectStore from "@/store/projectStore";
 
-const ProjectList = () => {
-  const { showModal } = useUIStore();
-  const { projects, setProjects, checkProjectPath } = useProjectStore();
+const ProjectList = ({ showModal: showModalProp }) => {
+  const { projects, setProjects } = useProjectStore();
   const { navigateToPath } = useNavigation();
 
   useEffect(() => {
@@ -16,15 +14,22 @@ const ProjectList = () => {
         const projectData = await window.api.loadProjectList();
         setProjects(projectData);
       } catch (error) {
+        showModalProp("프로젝트 목록을 불러오는 중 오류가 발생했습니다.");
         console.error(error);
       }
     };
 
     loadProjectLists();
-  }, [setProjects]);
+  }, [setProjects, showModalProp]);
 
   const handleProjectClick = async project => {
-    if (checkProjectPath(project.path)) {
+    try {
+      const isValidPath = await window.api.checkProjectPath(project.path);
+      if (!isValidPath) {
+        showModalProp(`경로를 찾을 수 없습니다: ${project.path}`);
+        return;
+      }
+
       const projectPath = await window.api.joinProjectPath(
         project.path,
         project.projectName
@@ -32,15 +37,15 @@ const ProjectList = () => {
       const projectFolderStructure =
         await window.api.readAllDirectory(projectPath);
 
-      if (!projectFolderStructure) {
-        console.error(
-          "Failed to load directory structure, the result is undefined."
-        );
+      if (!projectFolderStructure || projectFolderStructure.length === 0) {
+        showModalProp(`경로에 프로젝트가 없습니다: ${projectPath}`);
+        return;
       }
 
       navigateToPath(`/dashboard/${project.projectName}`);
-    } else {
-      showModal(`경로를 찾을 수 없습니다: ${project.path}`);
+    } catch (error) {
+      showModalProp("프로젝트를 불러오는 중 오류가 발생했습니다.");
+      console.error(error);
     }
   };
 
@@ -49,6 +54,7 @@ const ProjectList = () => {
       const response = await window.api.deleteProjectList(project.projectName);
       setProjects(response);
     } catch (error) {
+      showModalProp("프로젝트를 삭제하는 중 오류가 발생했습니다.");
       console.error(error);
     }
   };
