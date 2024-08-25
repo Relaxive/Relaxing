@@ -61,9 +61,11 @@ const ProjectList = () => {
           <li key={index} onClick={() => handleProjectClick(project)}>
             <div className="project-title">
               <span>{project.projectName}</span>
+              {project.custom.customName !== "undefined" && (
+                <span>{project.custom.customName}</span>
+              )}
               <span>{project.path}</span>
             </div>
-
             <button>
               <img
                 src={icons.closeIcon}

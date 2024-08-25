@@ -165,9 +165,17 @@ export const PageContentContainer = styled.div`
             width: 40%;
           }
 
+          &:nth-child(2) {
+            width: 20%;
+            font-size: ${({ theme }) => theme.fontSizes.largePlus};
+            color: ${({ theme }) => theme.colors.gray};
+            text-align: center;
+          }
+
           &:last-child {
             min-width: 50%;
             max-width: 100%;
+            text-align: center;
             font-size: ${({ theme }) => theme.fontSizes.largePlus};
             color: ${({ theme }) => theme.colors.sub};
           }
