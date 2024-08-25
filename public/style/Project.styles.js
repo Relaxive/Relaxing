@@ -22,6 +22,16 @@ export const Container = styled.div`
     cursor: default;
   }
 
+  .not-found {
+    display: inline-block;
+    padding: 3.125rem;
+    width: 100%;
+    text-align: center;
+    cursor: default;
+    font-size: ${({ theme }) => theme.fontSizes.largePlus};
+    color: ${({ theme }) => theme.colors.white};
+  }
+
   ${media.smallToMedium`
 		background: url("../images/smallToMedium.png") no-repeat 100%;
 	`}

@@ -84,29 +84,33 @@ const ProjectList = ({ showModal: showModalProp }) => {
   return (
     <PageContentContainer>
       <h1>Project List</h1>
-      <ul>
-        {projects.map((project, index) => (
-          <li key={index} onClick={() => handleProjectClick(project)}>
-            <div className="project-title">
-              <span>{project.projectName}</span>
-              {project.custom.customName !== "undefined" && (
-                <span>{project.custom.customName}</span>
-              )}
-              <span>{project.path}</span>
-            </div>
-            <button>
-              <img
-                src={icons.closeIcon}
-                alt="Close Icon"
-                onClick={e => {
-                  e.stopPropagation();
-                  handleIconClick(project);
-                }}
-              />
-            </button>
-          </li>
-        ))}
-      </ul>
+      {projects.length !== 0 ? (
+        <ul>
+          {projects.map((project, index) => (
+            <li key={index} onClick={() => handleProjectClick(project)}>
+              <div className="project-title">
+                <span>{project.projectName}</span>
+                {project.custom.customName !== "undefined" && (
+                  <span>{project.custom.customName}</span>
+                )}
+                <span>{project.path}</span>
+              </div>
+              <button>
+                <img
+                  src={icons.closeIcon}
+                  alt="Close Icon"
+                  onClick={e => {
+                    e.stopPropagation();
+                    handleIconClick(project);
+                  }}
+                />
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <span className="not-found">프로젝트가 없습니다.</span>
+      )}
     </PageContentContainer>
   );
 };
