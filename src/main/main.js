@@ -127,7 +127,11 @@ app.on("window-all-closed", () => {
 });
 
 ipcMain.handle("joined-project-path", (_, basePath, projectName) => {
-  return path.join(basePath, projectName);
+  if (basePath.endsWith(projectName)) {
+    return basePath;
+  } else {
+    return path.join(basePath, projectName);
+  }
 });
 
 ipcMain.handle("get-project-list", async () => {
@@ -158,6 +162,16 @@ ipcMain.handle("delete-project-list", async (_, projectName) => {
     return projectData;
   } catch (error) {
     console.error(error);
+  }
+});
+
+ipcMain.handle("check-project-path", async (_, projectPath) => {
+  try {
+    const exists = fs.existsSync(projectPath);
+    return exists;
+  } catch (error) {
+    console.error("Error checking project path:", error);
+    return false;
   }
 });
 

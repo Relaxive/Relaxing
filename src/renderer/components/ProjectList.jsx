@@ -3,6 +3,7 @@ import { PageContentContainer } from "@public/style/Project.styles";
 import { useNavigation } from "@utils/projectUtils";
 import icons from "@public/images";
 import useProjectStore from "@/store/projectStore";
+import useDashboardStore from "@/store/dashboardStore";
 
 const ProjectList = ({ showModal: showModalProp }) => {
   const { projects, setProjects } = useProjectStore();
@@ -25,6 +26,7 @@ const ProjectList = ({ showModal: showModalProp }) => {
   const handleProjectClick = async project => {
     try {
       const isValidPath = await window.api.checkProjectPath(project.path);
+
       if (!isValidPath) {
         showModalProp(`경로를 찾을 수 없습니다: ${project.path}`);
         return;
@@ -34,6 +36,7 @@ const ProjectList = ({ showModal: showModalProp }) => {
         project.path,
         project.projectName
       );
+
       const projectFolderStructure =
         await window.api.readAllDirectory(projectPath);
 
@@ -42,10 +45,29 @@ const ProjectList = ({ showModal: showModalProp }) => {
         return;
       }
 
+      const { dependencies, devDependencies } =
+        await window.api.loadPackageJsonData(projectPath);
+
+      const {
+        setFolderStructure,
+        setProjectPath,
+        setDependencies,
+        setDevDependencies
+      } = useDashboardStore.getState();
+
+      setFolderStructure({
+        name: project.projectName,
+        children: projectFolderStructure
+      });
+
+      setProjectPath(projectPath);
+      setDependencies(dependencies);
+      setDevDependencies(devDependencies);
+
       navigateToPath(`/dashboard/${project.projectName}`);
     } catch (error) {
       showModalProp("프로젝트를 불러오는 중 오류가 발생했습니다.");
-      console.error(error);
+      console.error("Error in handleProjectClick:", error);
     }
   };
 
