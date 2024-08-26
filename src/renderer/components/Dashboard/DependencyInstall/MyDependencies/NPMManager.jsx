@@ -95,12 +95,12 @@ const NPMManager = ({ showModal }) => {
 
   const handleSearch = async () => {
     if (searchQuery) {
-      const searchResults = await searchPackages(searchQuery);
-      const formattedResults = searchResults.map(
-        pkg => `${pkg.name} ${pkg.version || ""}`
+      const searchDependencyKeyword = await searchPackages(searchQuery);
+      const searchData = searchDependencyKeyword.map(
+        packages => `${packages.name} ${packages.version || ""}`
       );
 
-      setPackageItems(formattedResults);
+      setPackageItems(searchData);
       setSelectedPackageItem(null);
       setUIFlag("isDropdownVisible", true);
       setUIFlag("isEnterPressed", true);
