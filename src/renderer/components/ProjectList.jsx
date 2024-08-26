@@ -9,6 +9,11 @@ const ProjectList = ({ showModal: showModalProp }) => {
   const { projects, setProjects } = useProjectStore();
   const { navigateToPath } = useNavigation();
 
+  const { setFolderStructure, setProjectPath } = useDashboardStore(state => ({
+    setFolderStructure: state.setFolderStructure,
+    setProjectPath: state.setProjectPath
+  }));
+
   useEffect(() => {
     const loadProjectLists = async () => {
       try {
@@ -45,15 +50,10 @@ const ProjectList = ({ showModal: showModalProp }) => {
         return;
       }
 
-      const { dependencies, devDependencies } =
-        await window.api.loadPackageJsonData(projectPath);
-
-      const {
-        setFolderStructure,
-        setProjectPath,
-        setDependencies,
-        setDevDependencies
-      } = useDashboardStore.getState();
+      setFolderStructure({
+        name: project.projectName,
+        children: projectFolderStructure
+      });
 
       setFolderStructure({
         name: project.projectName,
@@ -61,8 +61,6 @@ const ProjectList = ({ showModal: showModalProp }) => {
       });
 
       setProjectPath(projectPath);
-      setDependencies(dependencies);
-      setDevDependencies(devDependencies);
 
       navigateToPath(`/dashboard/${project.projectName}`);
     } catch (error) {
