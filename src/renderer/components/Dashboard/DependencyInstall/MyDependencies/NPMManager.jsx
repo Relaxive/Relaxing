@@ -82,9 +82,9 @@ const NPMManager = ({ showModal }) => {
       );
       const responseData = await response.json();
 
-      return responseData.objects.map(pkg => ({
-        name: pkg.package.name,
-        version: pkg.package.version
+      return responseData.objects.map(packages => ({
+        name: packages.package.name,
+        version: packages.package.version
       }));
     } catch (error) {
       console.error(error);
