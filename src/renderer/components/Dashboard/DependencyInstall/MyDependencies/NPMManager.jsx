@@ -11,7 +11,7 @@ import Loading from "@components/common/Loading";
 import useUIStore from "@/store/uiStore";
 import useDashboardStore from "@/store/dashboardStore";
 
-const NPMManager = () => {
+const NPMManager = ({ showModal }) => {
   const {
     searchQuery,
     setSearchQuery,
@@ -55,18 +55,17 @@ const NPMManager = () => {
       if (!query) {
         return [];
       }
-
       const response = await fetch(
         `https://registry.npmjs.org/-/v1/search?text=${query}`
       );
       const responseData = await response.json();
-
       return responseData.objects.map(packages => ({
         name: packages.package.name,
         version: packages.package.version
       }));
     } catch (error) {
       console.error(error);
+      showModal("패키지 검색 중 오류가 발생했습니다.");
     }
   };
 
@@ -105,6 +104,7 @@ const NPMManager = () => {
     } catch (error) {
       console.error(error);
       setActiveLoading(false);
+      showModal("패키지 설치 중 오류가 발생했습니다.");
     }
   };
 

@@ -5,7 +5,7 @@ import Loading from "@components/common/Loading";
 import useUIStore from "@/store/uiStore";
 import useDashboardStore from "@/store/dashboardStore";
 
-const MyDependencies = () => {
+const MyDependencies = ({ showModal }) => {
   const { activeTab, setActiveTab, isLoading, setActiveLoading } = useUIStore(
     state => ({
       activeTab: state.activeTab,
@@ -30,17 +30,22 @@ const MyDependencies = () => {
 
   useEffect(() => {
     const loadPackageJson = async () => {
-      if (projectPath) {
-        setActiveLoading(true);
-
-        const loadPackageJson =
-          await window.api.loadPackageJsonData(projectPath);
-
-        if (loadPackageJson) {
-          setDependencies(loadPackageJson.dependencies);
-          setDevDependencies(loadPackageJson.devDependencies);
+      try {
+        if (projectPath) {
+          setActiveLoading(true);
         }
 
+        const packageJsonData =
+          await window.api.loadPackageJsonData(projectPath);
+
+        if (packageJsonData) {
+          setDependencies(packageJsonData.dependencies);
+          setDevDependencies(packageJsonData.devDependencies);
+        }
+      } catch (error) {
+        console.error(error);
+        showModal("패키지를 검색하는 중 오류가 발생했습니다.");
+      } finally {
         setActiveLoading(false);
       }
     };
