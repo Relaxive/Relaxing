@@ -56,19 +56,20 @@ const MyDependencies = ({ showModal }) => {
   const handleDeleteIconClick = async dependency => {
     try {
       if (!projectPath) {
-        showModal("현재 설정된 프로젝트 경로가 없습니다.")
+        showModal("현재 설정된 프로젝트 경로가 없습니다.");
         return;
       }
       setActiveLoading(true);
 
-      await window.api.uninstallDependencies({ projectPath, packageName: dependency.name });
+      await window.api.uninstallDependencies({
+        projectPath,
+        packageName: dependency.name
+      });
 
-      const updatedPackageJsonData = await window.api.loadPackageJsonData(projectPath);
-      if (updatedPackageJsonData) {
-        setDependencies(updatedPackageJsonData.dependencies);
-        setDevDependencies(updatedPackageJsonData.devDependencies);
-      }
-
+      const updatedPackageJsonData =
+        await window.api.loadPackageJsonData(projectPath);
+      setDependencies(updatedPackageJsonData.dependencies);
+      setDevDependencies(updatedPackageJsonData.devDependencies);
     } catch (error) {
       console.error(error);
       showModal(`${dependency.packageName} 삭제에 실패 했습니다.`);
