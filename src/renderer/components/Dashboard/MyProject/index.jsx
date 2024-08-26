@@ -43,7 +43,7 @@ const ItemList = ({ items = [], setItems }) => {
   return (
     <ul>
       {sortedItems.map((item, index) => (
-        <li key={index}>
+        <li key={item.path}>
           <img
             src={item.type === "folder" ? icons.folderLineIcon : icons.fileIcon}
             alt={item.type === "folder" ? "Folder Line Icon" : "File Icon"}

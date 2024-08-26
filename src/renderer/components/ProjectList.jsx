@@ -55,11 +55,6 @@ const ProjectList = ({ showModal: showModalProp }) => {
         children: projectFolderStructure
       });
 
-      setFolderStructure({
-        name: project.projectName,
-        children: projectFolderStructure
-      });
-
       setProjectPath(projectPath);
 
       navigateToPath(`/dashboard/${project.projectName}`);

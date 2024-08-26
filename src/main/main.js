@@ -26,7 +26,7 @@ const buildTree = flatList => {
     const normalizedPath = path.normalize(item.path);
     const parts = normalizedPath.split(path.sep).filter(Boolean);
 
-    let currentPath = "";
+    let currentPath = path.sep;
     let parent = root;
 
     parts.forEach((part, index) => {

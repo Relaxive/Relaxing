@@ -4,9 +4,7 @@ import ProjectController from "@components/Dashboard/MyProject/ProjectController
 import useDashboardStore from "@/store/dashboardStore";
 
 const Dashboard = () => {
-  const { projectPath } = useDashboardStore(state => ({
-    projectPath: state.projectPath
-  }));
+  const projectPath = useDashboardStore(state => state.projectPath);
 
   return (
     <DashboardContentContainer>
