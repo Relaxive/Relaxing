@@ -21,12 +21,16 @@ const initialState = {
     showVariantSelector: false,
     showDependenciesSelector: false
   },
-
   loading: {
-    loadingMessages: ["프로젝트를 생성중 입니다....", "Vite Create Project..."],
-    currentLoadingMessageIndex: 0
+    loadingMessages: [],
+    currentLoadingMessageIndex: 0,
+    isLoading: false
   },
-  isLoading: false
+  npmLoading: {
+    isLoading: false,
+    loadingMessages: [],
+    currentLoadingMessageIndex: 0
+  }
 };
 
 const useUIStore = create(set => ({
@@ -60,6 +64,7 @@ const useUIStore = create(set => ({
       activeModal: modalType,
       modalMessage: message
     })),
+
   closeModal: () =>
     set(() => ({
       uiFlags: {
@@ -81,8 +86,6 @@ const useUIStore = create(set => ({
 
   setActiveTab: tabName => set({ activeTab: tabName }),
 
-  setActiveLoading: isLoading => set({ isLoading }),
-
   setLoading: isLoading =>
     set(state => ({
       loading: {
@@ -91,18 +94,46 @@ const useUIStore = create(set => ({
       }
     })),
 
+  setNPMLoading: isLoading =>
+    set(state => ({
+      npmLoading: {
+        ...state.npmLoading,
+        isLoading
+      }
+    })),
+
+  setLoadingMessages: messages =>
+    set(state => ({
+      loading: {
+        ...state.loading,
+        loadingMessages: messages
+      }
+    })),
+
   updateLoadingMessageIndex: () =>
     set(state => {
       const { loadingMessages, currentLoadingMessageIndex } = state.loading;
+      if (!loadingMessages || loadingMessages.length === 0)
+        return state.loading;
+
+      const newIndex =
+        (currentLoadingMessageIndex + 1) % loadingMessages.length;
 
       return {
         loading: {
           ...state.loading,
-          currentLoadingMessageIndex:
-            (currentLoadingMessageIndex + 1) % loadingMessages.length
+          currentLoadingMessageIndex: newIndex
         }
       };
     }),
+
+  setNPMLoadingMessages: messages =>
+    set(state => ({
+      npmLoading: {
+        ...state.npmLoading,
+        loadingMessages: messages
+      }
+    })),
 
   resetLoadingMessageIndex: () =>
     set(state => ({
