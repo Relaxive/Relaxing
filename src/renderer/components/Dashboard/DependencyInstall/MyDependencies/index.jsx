@@ -1,14 +1,19 @@
 import { useEffect } from "react";
 import { MyDependenciesContainer } from "@public/style/DependencyInstall.styles";
 import DependencyList from "@components/common/DependencyList";
+import Loading from "@components/common/Loading";
 import useUIStore from "@/store/uiStore";
 import useDashboardStore from "@/store/dashboardStore";
 
 const MyDependencies = () => {
-  const { activeTab, setActiveTab } = useUIStore(state => ({
-    activeTab: state.activeTab,
-    setActiveTab: state.setActiveTab
-  }));
+  const { activeTab, setActiveTab, isLoading, setActiveLoading } = useUIStore(
+    state => ({
+      activeTab: state.activeTab,
+      setActiveTab: state.setActiveTab,
+      isLoading: state.isLoading,
+      setActiveLoading: state.setActiveLoading
+    })
+  );
   const {
     projectPath,
     dependencies,
@@ -26,6 +31,8 @@ const MyDependencies = () => {
   useEffect(() => {
     const loadPackageJson = async () => {
       if (projectPath) {
+        setActiveLoading(true);
+
         const loadPackageJson =
           await window.api.loadPackageJsonData(projectPath);
 
@@ -33,6 +40,8 @@ const MyDependencies = () => {
           setDependencies(loadPackageJson.dependencies);
           setDevDependencies(loadPackageJson.devDependencies);
         }
+
+        setActiveLoading(false);
       }
     };
 
@@ -42,6 +51,10 @@ const MyDependencies = () => {
   const handleIconClick = dependency => {
     console.log(`삭제 할 패키지: ${dependency.packageName}`);
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <MyDependenciesContainer>
