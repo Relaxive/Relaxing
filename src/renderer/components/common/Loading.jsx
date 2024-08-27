@@ -118,11 +118,7 @@ const Loading = ({
     <LoadingContainer customStyles={customStyles}>
       <Spinner noSpinner={noSpinner} changeSpinner={changeSpinner} />
       <LoadingText textLoading={textLoading}>
-        {externalLoadingMessages &&
-        externalLoadingMessages.length > 0 &&
-        currentLoadingMessageIndex < externalLoadingMessages.length
-          ? externalLoadingMessages[currentLoadingMessageIndex]
-          : ""}
+        {externalLoadingMessages?.[currentLoadingMessageIndex] || ""}
       </LoadingText>
     </LoadingContainer>
   );

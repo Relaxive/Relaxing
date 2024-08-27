@@ -86,59 +86,42 @@ const useUIStore = create(set => ({
 
   setActiveTab: tabName => set({ activeTab: tabName }),
 
-  setLoading: isLoading =>
+  setLoadingState: (type, isLoading) =>
     set(state => ({
-      loading: {
-        ...state.loading,
+      [type]: {
+        ...state[type],
         isLoading
       }
     })),
 
-  setNPMLoading: isLoading =>
+  setLoadingMessages: (type, messages) =>
     set(state => ({
-      npmLoading: {
-        ...state.npmLoading,
-        isLoading
-      }
-    })),
-
-  setLoadingMessages: messages =>
-    set(state => ({
-      loading: {
-        ...state.loading,
+      [type]: {
+        ...state[type],
         loadingMessages: messages
       }
     })),
 
-  updateLoadingMessageIndex: () =>
+  updateLoadingMessageIndex: type =>
     set(state => {
-      const { loadingMessages, currentLoadingMessageIndex } = state.loading;
-      if (!loadingMessages || loadingMessages.length === 0)
-        return state.loading;
+      const { loadingMessages, currentLoadingMessageIndex } = state[type];
+      if (!loadingMessages || loadingMessages.length === 0) return state[type];
 
       const newIndex =
         (currentLoadingMessageIndex + 1) % loadingMessages.length;
 
       return {
-        loading: {
-          ...state.loading,
+        [type]: {
+          ...state[type],
           currentLoadingMessageIndex: newIndex
         }
       };
     }),
 
-  setNPMLoadingMessages: messages =>
+  resetLoadingMessageIndex: type =>
     set(state => ({
-      npmLoading: {
-        ...state.npmLoading,
-        loadingMessages: messages
-      }
-    })),
-
-  resetLoadingMessageIndex: () =>
-    set(state => ({
-      loading: {
-        ...state.loading,
+      [type]: {
+        ...state[type],
         currentLoadingMessageIndex: 0
       }
     })),

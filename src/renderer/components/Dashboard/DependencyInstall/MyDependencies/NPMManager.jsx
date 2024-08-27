@@ -14,7 +14,7 @@ import useDashboardStore from "@/store/dashboardStore";
 const NPMManager = ({ showModal }) => {
   const {
     npmLoading,
-    setNPMLoading,
+    setLoadingState,
     uiFlags: { isDropdownVisible, isEnterPressed },
     searchQuery,
     setSearchQuery,
@@ -25,7 +25,7 @@ const NPMManager = ({ showModal }) => {
     setUIFlag
   } = useUIStore(state => ({
     npmLoading: state.npmLoading,
-    setNPMLoading: state.setNPMLoading,
+    setLoadingState: state.setLoadingState,
     uiFlags: state.uiFlags,
     searchQuery: state.searchQuery,
     setSearchQuery: state.setSearchQuery,
@@ -111,7 +111,7 @@ const NPMManager = ({ showModal }) => {
     if (!selectedPackageItem) return;
 
     try {
-      setNPMLoading(true);
+      setLoadingState("npmLoading", true);
 
       const [packageName, packageVersion] = selectedPackageItem.split(" ");
       const packageToInstall = packageVersion
@@ -132,7 +132,7 @@ const NPMManager = ({ showModal }) => {
       console.error(error);
       showModal("패키지 설치 중 오류가 발생했습니다.");
     } finally {
-      setNPMLoading(false);
+      setLoadingState("npmLoading", false);
     }
   };
 
