@@ -48,7 +48,6 @@ const ProjectList = ({ showModal: showModalProp }) => {
         await window.api.readAllDirectory(projectPath);
 
       if (
-        !projectFolderStructure ||
         !Array.isArray(projectFolderStructure) ||
         projectFolderStructure.length === 0
       ) {
