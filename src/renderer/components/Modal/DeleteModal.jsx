@@ -13,7 +13,9 @@ const DeleteModal = ({ message, onConfirm, onClose }) => {
   return (
     <ModalBackground onClick={onClose}>
       <ModalContainer className="large" onClick={e => e.stopPropagation()}>
-        <p>{message}</p>
+        <div className="title">
+          <span>{message}</span>
+        </div>
         <div className="button-group">
           <ButtonBox variant="default" onClick={onClose}>
             취소

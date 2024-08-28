@@ -73,7 +73,7 @@ const MyDependencies = ({ showModal, showDeleteModal }) => {
         setDevDependencies(updatedPackageJsonData.devDependencies);
       } catch (error) {
         console.error(error);
-        showModal(`${dependency.packageName} 삭제에 실패 했습니다.`);
+        showModal(`${dependency.name} 삭제에 실패 했습니다.`);
       } finally {
         setLoadingState("loading", false);
       }

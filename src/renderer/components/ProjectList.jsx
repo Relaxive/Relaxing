@@ -75,7 +75,9 @@ const ProjectList = ({ showModal: showModalProp, showDeleteModal }) => {
       `${project.projectName}을(를) 삭제하시겠습니까?`,
       async () => {
         try {
-          const response = await window.api.deleteProjectList(project.projectName);
+          const response = await window.api.deleteProjectList(
+            project.projectName
+          );
           setProjects(response);
         } catch (error) {
           showModalProp("프로젝트를 삭제하는 중 오류가 발생했습니다.");
