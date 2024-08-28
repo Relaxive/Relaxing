@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import ButtonBox from "@/components/common/ButtonBox";
 import {
   media,
   FlexContainer,
@@ -238,6 +239,10 @@ export const PageContentContainer = styled.div`
 	`}
 
   .toggle-layout {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.875rem;
+
     h1 {
       padding-bottom: 0.625rem;
       font-size: ${({ theme }) => theme.fontSizes.xlarge};
@@ -255,15 +260,28 @@ export const ButtonContainer = styled.div`
   z-index: 10;
 `;
 
+export const ToggleSectionAction = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 1.25rem;
+  border-radius: ${({ theme }) => theme.borderRadius.small};
+  background-color: ${({ theme }) => theme.colors.deepBlue};
+  ${commonBoxShadow}
+
+  transition: background-color 0.5s,
+`;
+
 export const SettingLoadContainer = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  width: calc(100% - 5rem);
+  margin: 0 auto 1.875rem;
   padding: 1rem;
-  border-radius: ${({ theme }) => theme.borderRadius.main};
-  ${commonBoxShadow}
+  border-radius: ${({ theme }) => theme.borderRadius.sub};
   background-color: ${({ theme }) => theme.colors.white};
-  overflow-y: auto;
 `;
 
 export const RadioGroup = styled.ul`
@@ -272,11 +290,8 @@ export const RadioGroup = styled.ul`
   flex-direction: column;
   gap: 0.5rem;
   width: 100%;
-
-  &:last-child {
-    height: 18.75rem;
-    overflow-y: auto;
-  }
+  max-height: 18.75rem;
+  overflow-y: auto;
 
   label {
     display: flex;
@@ -294,7 +309,9 @@ export const RadioGroup = styled.ul`
 export const ProjectStarterContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 28.125rem;
+  width: calc(100% - 5rem);
+  max-height: 28.125rem;
+  margin: 0 auto 1.875rem;
 `;
 
 export const PathInputContainer = styled.div`
@@ -311,18 +328,11 @@ export const PathInput = styled.input`
   font-size: ${({ theme }) => theme.fontSizes.normal};
   color: ${({ theme }) => theme.colors.sub};
   background-color: ${({ theme }) => theme.colors.white};
-  ${commonBoxShadow}
   cursor: default;
 `;
-
-export const UploadButton = styled.button`
+export const UploadButton = styled(ButtonBox)`
   padding: 0.625rem 1.25rem;
-  ${commonBorderRadius}
-  color: ${({ theme }) => theme.colors.basic};
-  font-weight: bold;
-  ${commonBoxShadow}
-  background-color: ${({ theme }) => theme.colors.action};
-  cursor: pointer;
+  box-shadow: none;
 `;
 
 export const DirectoryListContainer = styled.div`
@@ -331,8 +341,7 @@ export const DirectoryListContainer = styled.div`
   padding: 1.25rem;
   margin-bottom: 1.25rem;
   ${commonBorderRadius}
-  ${commonBoxShadow}
-	background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.white};
 
   .layout {
     height: 12.5rem;
@@ -378,7 +387,6 @@ export const ProjectNameInput = styled.input`
   ${commonBorderRadius}
   border: 1px solid ${({ theme }) => theme.colors.gray};
   font-size: ${({ theme }) => theme.fontSizes.normal};
-  ${commonBoxShadow}
   background-color: ${({ theme }) => theme.colors.white};
 `;
 
@@ -413,20 +421,22 @@ export const ProjectNameSelect = styled.select`
   padding-right: 2rem;
   border: 1px solid ${({ theme }) => theme.colors.gray};
   ${commonBorderRadius}
-  ${commonBoxShadow}
-	font-size: ${({ theme }) => theme.fontSizes.normal};
+  font-size: ${({ theme }) => theme.fontSizes.normal};
   background-color: ${({ theme }) => theme.colors.white};
 `;
 
 export const SelectorContainer = styled.div`
-  min-height: 12.5rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 5rem);
+  margin: 0 auto 1.875rem;
   padding: 1.25rem;
   border-radius: ${({ theme }) => theme.borderRadius.main};
   background-color: ${({ theme }) => theme.colors.white};
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
   .layout {
-    height: 9.375rem;
+    max-height: 15.625rem;
     overflow-y: auto;
     overflow-x: hidden;
 
@@ -448,8 +458,7 @@ export const SelectorItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-right: 0.3125rem;
-  margin-bottom: 1.25rem;
+  padding: 0.3125rem 0.3125rem 0.3125rem 0;
 `;
 
 export const TextContainer = styled.div`

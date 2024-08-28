@@ -8,6 +8,7 @@ import {
   processProjectData
 } from "@utils/projectUtils";
 import {
+  ToggleSectionAction,
   PageContentContainer,
   ButtonContainer
 } from "@public/style/Project.styles";
@@ -270,53 +271,63 @@ const CreateProject = () => {
       </ButtonContainer>
       <div className="toggle-layout">
         <h1>Create Project</h1>
-        <ToggleSection
-          title="Setting Load"
-          isActive={sections.showSettingLoad}
-          onToggle={() => toggleSection("showSettingLoad")}
-        >
-          <SettingLoad />
-        </ToggleSection>
-        <ToggleSection
-          title="Project Starter"
-          isActive={sections.showProjectStarter}
-          onToggle={() => toggleSection("showProjectStarter")}
-        >
-          <ProjectStarter />
-        </ToggleSection>
-        <ToggleSection
-          title="Framework Selector"
-          isActive={sections.showFrameworkSelector}
-          onToggle={() => toggleSection("showFrameworkSelector")}
-          disabled={!sections.showFrameworkSelector}
-        >
-          <FrameworkSelector
-            selectedFrameworkIndex={selectedFrameworkIndex}
-            setSelectedFrameworkIndex={setSelectedFrameworkIndex}
-          />
-        </ToggleSection>
-        <ToggleSection
-          title="Variant Selector"
-          isActive={sections.showVariantSelector}
-          onToggle={() => toggleSection("showVariantSelector")}
-          disabled={!sections.showVariantSelector}
-        >
-          <VariantSelector
-            selectedFrameworkIndex={selectedFrameworkIndex}
-            setSelectedVariantIndex={setSelectedVariantIndex}
-            setSelectedOptionIndex={setSelectedOptionIndex}
-          />
-        </ToggleSection>
-        <ToggleSection
-          title="Dependencies Selector"
-          isActive={sections.showDependenciesSelector}
-          onToggle={() => toggleSection("showDependenciesSelector")}
-          disabled={!sections.showDependenciesSelector}
-        >
-          <DependenciesSelector
-            selectedDependenciesIndex={selectedDependenciesIndex}
-          />
-        </ToggleSection>
+        <ToggleSectionAction>
+          <ToggleSection
+            title="Setting Load"
+            isActive={sections.showSettingLoad}
+            onToggle={() => toggleSection("showSettingLoad")}
+          >
+            <SettingLoad />
+          </ToggleSection>
+        </ToggleSectionAction>
+        <ToggleSectionAction>
+          <ToggleSection
+            title="Project Starter"
+            isActive={sections.showProjectStarter}
+            onToggle={() => toggleSection("showProjectStarter")}
+          >
+            <ProjectStarter />
+          </ToggleSection>
+        </ToggleSectionAction>
+        <ToggleSectionAction>
+          <ToggleSection
+            title="Framework Selector"
+            isActive={sections.showFrameworkSelector}
+            onToggle={() => toggleSection("showFrameworkSelector")}
+            disabled={!sections.showFrameworkSelector}
+          >
+            <FrameworkSelector
+              selectedFrameworkIndex={selectedFrameworkIndex}
+              setSelectedFrameworkIndex={setSelectedFrameworkIndex}
+            />
+          </ToggleSection>
+        </ToggleSectionAction>
+        <ToggleSectionAction>
+          <ToggleSection
+            title="Variant Selector"
+            isActive={sections.showVariantSelector}
+            onToggle={() => toggleSection("showVariantSelector")}
+            disabled={!sections.showVariantSelector}
+          >
+            <VariantSelector
+              selectedFrameworkIndex={selectedFrameworkIndex}
+              setSelectedVariantIndex={setSelectedVariantIndex}
+              setSelectedOptionIndex={setSelectedOptionIndex}
+            />
+          </ToggleSection>
+        </ToggleSectionAction>
+        <ToggleSectionAction>
+          <ToggleSection
+            title="Dependencies Selector"
+            isActive={sections.showDependenciesSelector}
+            onToggle={() => toggleSection("showDependenciesSelector")}
+            disabled={!sections.showDependenciesSelector}
+          >
+            <DependenciesSelector
+              selectedDependenciesIndex={selectedDependenciesIndex}
+            />
+          </ToggleSection>
+        </ToggleSectionAction>
       </div>
 
       {isModalOpen &&

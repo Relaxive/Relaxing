@@ -5,6 +5,7 @@ export const theme = {
     small: ".625rem",
     normal: ".9375rem",
     largePlus: "1.25rem",
+    middleLarge: "1.5625rem",
     xlarge: "1.875rem"
   },
   borderRadius: {
@@ -21,8 +22,11 @@ export const theme = {
     white: "#ffffff",
     border: "#8299Bc",
     gray: "#cacaca",
+    deepBlue: "#4F7cd3",
+    deepGray: "#606060",
     action: "#ffde5a",
     activeButton: "#699eff",
+    purple: "#758fff",
     lightMain: "#c9dbff",
     mainScroll: "#f7f7f7",
     subScroll: "#88b1ff",

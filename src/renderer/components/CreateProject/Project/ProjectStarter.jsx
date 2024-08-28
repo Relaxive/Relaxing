@@ -92,7 +92,9 @@ const ProjectStarter = () => {
     <ProjectStarterContainer>
       <PathInputContainer>
         <PathInput type="text" value={path} readOnly />
-        <UploadButton onClick={handleUploadClick}>업로드</UploadButton>
+        <UploadButton variant={"active"} onClick={handleUploadClick}>
+          업로드
+        </UploadButton>
       </PathInputContainer>
       <DirectoryListContainer>
         <div className="layout">

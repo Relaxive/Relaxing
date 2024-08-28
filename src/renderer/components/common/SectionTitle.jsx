@@ -6,34 +6,27 @@ const SectionTitle = styled.h2.withConfig({
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem;
-  margin: 1.25rem 0;
+
+  padding: ${({ isActive, disabled }) =>
+    disabled ? "1rem 2.5rem" : isActive ? "1.25rem 2.5rem" : "1.25rem 2.5rem"};
   border-radius: ${({ theme }) => theme.borderRadius.small};
   background-color: ${({ theme, isActive, disabled }) =>
-    disabled
-      ? theme.colors.gray
-      : isActive
-        ? theme.colors.white
-        : theme.colors.gray};
-  color: ${({ theme, isActive, disabled }) =>
-    disabled
-      ? theme.colors.sub
-      : isActive
-        ? theme.colors.action
-        : theme.colors.sub};
+    disabled ? theme.colors.gray : isActive ? "none" : theme.colors.gray};
   box-shadow: ${({ isActive, disabled }) =>
-    disabled ? "none" : isActive ? "0 4px 4px 0 rgba(0, 0, 0, 0.25)" : "none"};
+    disabled ? "none" : (isActive = "none")};
   cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
 
   span {
     color: ${({ theme, isActive, disabled }) =>
       disabled
-        ? theme.colors.white
+        ? theme.colors.deepGray
         : isActive
-          ? theme.colors.basic
-          : theme.colors.white};
+          ? theme.colors.white
+          : theme.colors.deepGray};
     font-weight: ${({ isActive, disabled }) =>
       disabled ? "normal" : isActive ? "bold" : "normal"};
+    font-size: ${({ theme }) => theme.fontSizes.middleLarge};
+    transition: color 0.3s ease;
   }
 
   img {
@@ -41,7 +34,7 @@ const SectionTitle = styled.h2.withConfig({
       disabled
         ? "grayscale(100%)"
         : isActive
-          ? "invert(65%) sepia(92%) saturate(679%) hue-rotate(358deg) brightness(102%) contrast(101%)"
+          ? "invert(100%)"
           : "invert(29%) sepia(5%) saturate(440%) hue-rotate(173deg) brightness(96%) contrast(91%)"};
     transform: ${({ isActive }) =>
       isActive ? "rotate(0deg)" : "rotate(180deg)"};
