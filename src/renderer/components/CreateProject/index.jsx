@@ -93,15 +93,14 @@ const CreateProject = () => {
       selectedOptionIndex
     } = projectStore;
 
+    if (!selectedSettingOption) return {};
+
     return {
       showSettingLoad: sections.showSettingLoad || selectedSettingOption,
       showProjectStarter: sections.showProjectStarter || selectedSettingOption,
-      showFrameworkSelector:
-        selectedSettingOption && selectedPackageManager && path,
-      showVariantSelector:
-        selectedSettingOption && isProjectStarterValid && isFrameworksSelected,
+      showFrameworkSelector: selectedPackageManager && path,
+      showVariantSelector: isProjectStarterValid && isFrameworksSelected,
       showDependenciesSelector:
-        selectedSettingOption &&
         isProjectStarterValid &&
         isFrameworksSelected &&
         selectedFrameworkIndex !== null &&
@@ -119,12 +118,19 @@ const CreateProject = () => {
       selectedOptionIndex,
       selectedDependenciesIndex
     } = projectStore;
+
     let completedCount = 0;
+
     if (selectedSettingOption) completedCount++;
     if (projectName && selectedPackageManager && path) completedCount++;
     if (selectedFrameworkIndex !== null) completedCount++;
     if (selectedOptionIndex !== null) completedCount++;
-    if (selectedDependenciesIndex) completedCount++;
+    if (
+      selectedDependenciesIndex !== null &&
+      typeof selectedDependenciesIndex !== "undefined"
+    )
+      completedCount++;
+
     return completedCount;
   };
 
@@ -281,6 +287,62 @@ const CreateProject = () => {
   const totalToggles = 5;
   const completedToggles = getCompletedToggleCount();
 
+  const renderModalContent = () => {
+    if (!uiStore.uiFlags.isModalOpen) {
+      return null;
+    }
+
+    switch (uiStore.activeModal) {
+      case "cancel":
+        return (
+          <CancelCompleteModal
+            onSave={handleConfirmCancel}
+            onCancel={uiStore.closeModal}
+            message={uiStore.modalMessage}
+            subMessage="입력한 정보는 복구할 수 없습니다."
+          />
+        );
+
+      case "customSave":
+        return (
+          <CancelCompleteModal
+            onSave={() =>
+              handleConfirmCreate(projectStore.selectedSettingOption)
+            }
+            onCancel={uiStore.closeModal}
+            message={uiStore.modalMessage}
+            subMessage="프로젝트를 생성 하시겠습니까?"
+          />
+        );
+
+      case "save":
+        return (
+          <SaveModal
+            onSave={customName => {
+              uiStore.closeModal();
+              handleConfirmCreate(customName);
+            }}
+            onCreate={customName => {
+              uiStore.closeModal();
+              handleConfirmCreate(customName);
+            }}
+            onCancel={uiStore.closeModal}
+            title="사용자 설정 저장"
+            description={
+              <>
+                의존성 설치 및 설정에 대한 정보가 저장됩니다. <br />
+                생성으로 선택할 경우 사용자 설정은 저장되지 않고, 프로젝트가
+                만들어집니다.
+              </>
+            }
+          />
+        );
+
+      default:
+        return null;
+    }
+  };
+
   return (
     <PageContentContainer>
       {uiStore.loading.isLoading && (
@@ -385,50 +447,7 @@ const CreateProject = () => {
         </ToggleSection>
       </div>
 
-      {uiStore.uiFlags.isModalOpen && (
-        <>
-          {uiStore.activeModal === "cancel" ||
-          uiStore.activeModal === "customSave" ? (
-            <CancelCompleteModal
-              onSave={
-                uiStore.activeModal === "cancel"
-                  ? handleConfirmCancel
-                  : () =>
-                      handleConfirmCreate(projectStore.selectedSettingOption)
-              }
-              onCancel={uiStore.closeModal}
-              message={uiStore.modalMessage}
-              subMessage={
-                uiStore.activeModal === "cancel"
-                  ? "입력한 정보는 복구할 수 없습니다."
-                  : "프로젝트를 생성 하시겠습니까?"
-              }
-            />
-          ) : (
-            uiStore.activeModal === "save" && (
-              <SaveModal
-                onSave={customName => {
-                  uiStore.closeModal();
-                  handleConfirmCreate(customName);
-                }}
-                onCreate={customName => {
-                  uiStore.closeModal();
-                  handleConfirmCreate(customName);
-                }}
-                onCancel={uiStore.closeModal}
-                title="사용자 설정 저장"
-                description={
-                  <>
-                    의존성 설치 및 설정에 대한 정보가 저장됩니다. <br />
-                    생성으로 선택할 경우 사용자 설정은 저장되지 않고, 프로젝트가
-                    만들어집니다.
-                  </>
-                }
-              />
-            )
-          )}
-        </>
-      )}
+      {renderModalContent()}
     </PageContentContainer>
   );
 };
