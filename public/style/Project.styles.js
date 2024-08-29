@@ -97,6 +97,9 @@ export const Navigation = styled.nav.withConfig({
 
         span {
           display: none;
+          margin-top: 0.3125rem;
+          color: ${({ theme }) => theme.colors.border};
+          letter-spacing: -0.2px;
         }
       }
     }
@@ -140,7 +143,6 @@ export const Navigation = styled.nav.withConfig({
 
 					span {
 						display: inline-block;
-						color: ${({ theme }) => theme.colors.border};
 					}
 				}
 			}
