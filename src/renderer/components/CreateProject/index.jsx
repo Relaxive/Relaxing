@@ -25,6 +25,12 @@ import useUIStore from "@/store/uiStore";
 import useProjectStore from "@/store/projectStore";
 import optionConfig from "@utils/option.config";
 import useDashboardStore from "@/store/dashboardStore";
+import {
+  MODAL_TYPES,
+  MESSAGES,
+  LOADING_MESSAGES,
+  TOTAL_TOGGLES
+} from "@utils/constants";
 
 const CreateProject = () => {
   const { navigateToPath } = useNavigation();
@@ -161,9 +167,8 @@ const CreateProject = () => {
       isSaveEnabled()
     ) {
       return {
-        type: "save",
-        message:
-          "의존성 설치 및 설정에 대한 정보가 저장됩니다. 생성으로 선택할경우 사용자 설정은 저장되지않고, 프로젝트가 만들어집니다."
+        type: MODAL_TYPES.SAVE,
+        message: MESSAGES.SAVE_DESCRIPTION
       };
     } else if (
       projectStore.selectedSettingOption !== "userDefined" &&
@@ -178,7 +183,7 @@ const CreateProject = () => {
       } catch (error) {
         console.error("Error loading project data:", error);
         return {
-          type: "error",
+          type: MODAL_TYPES.Error,
           message: "프로젝트 데이터를 불러오는 중 오류가 발생했습니다."
         };
       }
@@ -205,7 +210,7 @@ const CreateProject = () => {
       projectStore.isFrameworksSelected ||
       anySectionActive
     ) {
-      uiStore.showModal("cancel", "프로젝트 생성을 취소하시겠습니까?");
+      uiStore.showModal(MODAL_TYPES.CANCEL, MESSAGES.CANCEL_CONFIRMATION);
     } else {
       navigateToPath("/project/project-list");
     }
@@ -287,7 +292,6 @@ const CreateProject = () => {
     navigateToPath("/project/project-list");
   };
 
-  const totalToggles = 5;
   const completedToggles = getCompletedToggleCount();
 
   const renderModalContent = () => {
@@ -296,17 +300,17 @@ const CreateProject = () => {
     }
 
     switch (uiStore.activeModal) {
-      case "cancel":
+      case MODAL_TYPES.CANCEL:
         return (
           <CancelCompleteModal
             onSave={handleConfirmCancel}
             onCancel={uiStore.closeModal}
             message={uiStore.modalMessage}
-            subMessage="입력한 정보는 복구할 수 없습니다."
+            subMessage={MESSAGES.PROJECT_CANCEL_SUB_MESSAGE}
           />
         );
 
-      case "customSave":
+      case MODAL_TYPES.CUSTOM_SAVE:
         return (
           <CancelCompleteModal
             onSave={() =>
@@ -314,11 +318,11 @@ const CreateProject = () => {
             }
             onCancel={uiStore.closeModal}
             message={uiStore.modalMessage}
-            subMessage="프로젝트를 생성 하시겠습니까?"
+            subMessage={MESSAGES.PROJECT_CREATION_CONFIRMATION}
           />
         );
 
-      case "save":
+      case MODAL_TYPES.SAVE:
         return (
           <SaveModal
             onSave={customName => {
@@ -331,13 +335,8 @@ const CreateProject = () => {
             }}
             onCancel={uiStore.closeModal}
             title="사용자 설정 저장"
-            description={
-              <>
-                의존성 설치 및 설정에 대한 정보가 저장됩니다. <br />
-                생성으로 선택할 경우 사용자 설정은 저장되지 않고, 프로젝트가
-                만들어집니다.
-              </>
-            }
+            description={<>{MESSAGES.SAVE_DESCRIPTION}</>}
+            existingProjectNames={uiStore.existingProjectNames}
           />
         );
 
@@ -346,16 +345,30 @@ const CreateProject = () => {
     }
   };
 
+  useEffect(() => {
+    const loadProjectNames = async () => {
+      try {
+        const projectData = await window.api.loadProjectList();
+        const projectNames = projectData.map(
+          project => project.custom?.customName || ""
+        );
+
+        uiStore.setExistingProjectNames(projectNames.filter(name => name));
+      } catch (error) {
+        console.error("Error loading project names:", error);
+      }
+    };
+
+    loadProjectNames();
+  }, []);
+
   return (
     <PageContentContainer>
       {uiStore.loading.isLoading && (
         <Loading
           noSpinner={false}
           customStyles={false}
-          loadingMessages={[
-            "프로젝트를 생성중 입니다....",
-            "Vite Create Project..."
-          ]}
+          loadingMessages={LOADING_MESSAGES}
         />
       )}
       <ButtonContainer>
@@ -374,7 +387,7 @@ const CreateProject = () => {
         <h1>
           Create Project
           <span className="toggle-status">
-            <span>{completedToggles}</span> / <span>{totalToggles}</span>
+            <span>{completedToggles}</span> / <span>{TOTAL_TOGGLES}</span>
           </span>
         </h1>
         <ToggleSection
