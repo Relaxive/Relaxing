@@ -6,7 +6,6 @@ const SectionTitle = styled.h2.withConfig({
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   padding: ${({ isActive, disabled }) =>
     disabled ? "1rem 2.5rem" : isActive ? "1.25rem 2.5rem" : "1.25rem 2.5rem"};
   border-radius: ${({ theme }) => theme.borderRadius.small};
@@ -14,7 +13,7 @@ const SectionTitle = styled.h2.withConfig({
     disabled ? theme.colors.gray : isActive ? "none" : theme.colors.gray};
   box-shadow: ${({ isActive, disabled }) =>
     disabled ? "none" : (isActive = "none")};
-  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+  cursor: pointer;
 
   span {
     color: ${({ theme, isActive, disabled }) =>

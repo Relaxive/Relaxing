@@ -43,14 +43,11 @@ const CreateProject = () => {
     setSectionsVisibility
   } = useUIStore();
   const {
-    isUserDefinedSetting,
     isProjectStarterValid,
     isFrameworksSelected,
     selectedSettingOption,
     selectedFrameworkIndex,
     selectedOptionIndex,
-    selectedVariantIndex,
-    setSelectedFrameworkIndex,
     selectedDependenciesIndex,
     selectedPackageManager,
     setSelectedVariantIndex,
@@ -65,18 +62,15 @@ const CreateProject = () => {
     path: state.path,
     frameworkName: state.frameworkName,
     variantName: state.variantName,
-    setSelectedFrameworkIndex: state.setSelectedFrameworkIndex,
     selectedPackageManager: state.selectedPackageManager,
     isProjectStarterValid: state.isProjectStarterValid,
     isFrameworksSelected: state.isFrameworksSelected,
     selectedSettingOption: state.selectedSettingOption,
     resetProjectState: state.resetProjectState,
-    isUserDefinedSetting: state.isUserDefinedSetting,
     selectedDependenciesIndex: state.selectedDependenciesIndex,
     selectedFrameworkIndex: state.selectedFrameworkIndex,
     setSelectedOptionIndex: state.setSelectedOptionIndex,
     selectedOptionIndex: state.selectedOptionIndex,
-    selectedVariantIndex: state.selectedVariantIndex,
     setSelectedVariantIndex: state.setSelectedVariantIndex
   }));
   const { setFolderStructure, setProjectPath } = useDashboardStore(state => ({
@@ -109,18 +103,39 @@ const CreateProject = () => {
   };
 
   const isSectionVisible = () => ({
-    showSettingLoad: true,
-    showProjectStarter: true,
-    showFrameworkSelector: isProjectStarterValid && isUserDefinedSetting,
+    showSettingLoad: sections.showSettingLoad || selectedSettingOption,
+    showProjectStarter: sections.showProjectStarter || selectedSettingOption,
+    showFrameworkSelector:
+      selectedSettingOption && selectedPackageManager && path,
     showVariantSelector:
-      isProjectStarterValid && isFrameworksSelected && isUserDefinedSetting,
+      selectedSettingOption && isProjectStarterValid && isFrameworksSelected,
     showDependenciesSelector:
-      isUserDefinedSetting &&
+      selectedSettingOption &&
       isProjectStarterValid &&
       isFrameworksSelected &&
       selectedFrameworkIndex !== null &&
       selectedOptionIndex !== null
   });
+
+  useEffect(() => {
+    const visibilitySettings = isSectionVisible();
+    setSectionsVisibility(visibilitySettings);
+
+    if (selectedPackageManager && path) {
+      toggleSection("showSettingLoad");
+    }
+    if (selectedFrameworkIndex !== null) {
+      toggleSection("showVariantSelector");
+    }
+    if (selectedOptionIndex !== null) {
+      toggleSection("showDependenciesSelector");
+    }
+  }, [
+    selectedPackageManager,
+    path,
+    selectedFrameworkIndex,
+    selectedOptionIndex
+  ]);
 
   const getSaveMessage = async () => {
     if (selectedSettingOption === "userDefined" && isSaveEnabled()) {
@@ -149,19 +164,6 @@ const CreateProject = () => {
 
     return null;
   };
-
-  useEffect(() => {
-    const visibilitySettings = isSectionVisible();
-    setSectionsVisibility(visibilitySettings);
-  }, [
-    isUserDefinedSetting,
-    isProjectStarterValid,
-    isFrameworksSelected,
-    selectedFrameworkIndex,
-    selectedVariantIndex,
-    selectedOptionIndex,
-    setSectionsVisibility
-  ]);
 
   const handleCancelClick = () => {
     const anySectionActive =
@@ -276,6 +278,7 @@ const CreateProject = () => {
             title="Setting Load"
             isActive={sections.showSettingLoad}
             onToggle={() => toggleSection("showSettingLoad")}
+            isVisible={true}
           >
             <SettingLoad />
           </ToggleSection>
@@ -285,6 +288,7 @@ const CreateProject = () => {
             title="Project Starter"
             isActive={sections.showProjectStarter}
             onToggle={() => toggleSection("showProjectStarter")}
+            isVisible={selectedSettingOption}
           >
             <ProjectStarter />
           </ToggleSection>
@@ -294,11 +298,15 @@ const CreateProject = () => {
             title="Framework Selector"
             isActive={sections.showFrameworkSelector}
             onToggle={() => toggleSection("showFrameworkSelector")}
-            disabled={!sections.showFrameworkSelector}
+            isVisible={
+              selectedSettingOption === "userDefined" &&
+              selectedPackageManager &&
+              projectName &&
+              path
+            }
           >
             <FrameworkSelector
               selectedFrameworkIndex={selectedFrameworkIndex}
-              setSelectedFrameworkIndex={setSelectedFrameworkIndex}
             />
           </ToggleSection>
         </ToggleSectionAction>
@@ -307,7 +315,7 @@ const CreateProject = () => {
             title="Variant Selector"
             isActive={sections.showVariantSelector}
             onToggle={() => toggleSection("showVariantSelector")}
-            disabled={!sections.showVariantSelector}
+            isVisible={selectedFrameworkIndex !== null}
           >
             <VariantSelector
               selectedFrameworkIndex={selectedFrameworkIndex}
@@ -321,7 +329,11 @@ const CreateProject = () => {
             title="Dependencies Selector"
             isActive={sections.showDependenciesSelector}
             onToggle={() => toggleSection("showDependenciesSelector")}
-            disabled={!sections.showDependenciesSelector}
+            isVisible={
+              selectedFrameworkIndex !== null &&
+              setSelectedVariantIndex &&
+              setSelectedOptionIndex
+            }
           >
             <DependenciesSelector
               selectedDependenciesIndex={selectedDependenciesIndex}
