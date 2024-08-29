@@ -297,7 +297,7 @@ export const RadioGroup = styled.ul`
 export const ProjectStarterContainer = styled.div`
   display: flex;
   flex-direction: column;
-  ${({ theme }) => theme.spacing.calc_5rem};
+  width: ${({ theme }) => theme.spacing.calc_5rem};
   max-height: 28.125rem;
   margin: 0 auto 1.875rem;
 `;
@@ -417,7 +417,7 @@ export const SelectorContainer = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  ${({ theme }) => theme.spacing.calc_5rem};
+  width: ${({ theme }) => theme.spacing.calc_5rem};
   margin: 0 auto 1.875rem;
   padding: 1.25rem;
   border-radius: ${({ theme }) => theme.borderRadius.main};

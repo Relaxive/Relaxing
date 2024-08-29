@@ -25,6 +25,7 @@ export const theme = {
     deepBlue: "rgba(79, 124, 211, 0.7)",
     deepGray: "#606060",
     action: "#ffde5a",
+    lighAction: "#fae282",
     activeButton: "#699eff",
     lightMain: "#c9dbff",
     mainScroll: "#f7f7f7",

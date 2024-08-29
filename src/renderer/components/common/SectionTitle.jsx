@@ -10,7 +10,11 @@ const SectionTitle = styled.h2.withConfig({
     isActive ? "1.25rem 2.5rem" : "1.25rem 2.5rem"};
   border-radius: ${({ theme }) => theme.borderRadius.small};
   background-color: ${({ theme, isComplete, isActive }) =>
-    isActive ? "none" : isComplete ? theme.colors.action : theme.colors.gray};
+    isActive
+      ? "none"
+      : isComplete
+        ? theme.colors.lighAction
+        : theme.colors.gray};
   box-shadow: ${({ isActive }) => (isActive ? "none" : "none")};
   cursor: pointer;
 
