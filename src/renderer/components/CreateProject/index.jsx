@@ -135,25 +135,18 @@ const CreateProject = () => {
   };
 
   useEffect(() => {
-    const { setSectionsVisibility, toggleSection } = uiStore;
-    const {
-      selectedPackageManager,
-      path,
-      selectedFrameworkIndex,
-      selectedOptionIndex
-    } = projectStore;
     const visibilitySettings = isSectionVisible();
 
-    setSectionsVisibility(visibilitySettings);
+    uiStore.setSectionsVisibility(visibilitySettings);
 
-    if (selectedPackageManager && path) {
-      toggleSection("showSettingLoad");
+    if (projectStore.selectedPackageManager && projectStore.path) {
+      uiStore.toggleSection("showSettingLoad");
     }
-    if (selectedFrameworkIndex !== null) {
-      toggleSection("showVariantSelector");
+    if (projectStore.selectedFrameworkIndex !== null) {
+      uiStore.toggleSection("showVariantSelector");
     }
-    if (selectedOptionIndex !== null) {
-      toggleSection("showDependenciesSelector");
+    if (projectStore.selectedOptionIndex !== null) {
+      uiStore.toggleSection("showDependenciesSelector");
     }
   }, [
     projectStore.selectedPackageManager,
@@ -163,18 +156,25 @@ const CreateProject = () => {
   ]);
 
   const getSaveMessage = async () => {
-    const { selectedSettingOption } = projectStore;
-
-    if (selectedSettingOption === "userDefined" && isSaveEnabled()) {
+    if (
+      projectStore.selectedSettingOption === "userDefined" &&
+      isSaveEnabled()
+    ) {
       return {
         type: "save",
         message:
           "의존성 설치 및 설정에 대한 정보가 저장됩니다. 생성으로 선택할경우 사용자 설정은 저장되지않고, 프로젝트가 만들어집니다."
       };
-    } else if (selectedSettingOption !== "userDefined" && isSaveEnabled()) {
+    } else if (
+      projectStore.selectedSettingOption !== "userDefined" &&
+      isSaveEnabled()
+    ) {
       try {
         const projectData = await window.api.loadProjectList();
-        return processProjectData(projectData, selectedSettingOption);
+        return processProjectData(
+          projectData,
+          projectStore.selectedSettingOption
+        );
       } catch (error) {
         console.error("Error loading project data:", error);
         return {
@@ -188,7 +188,6 @@ const CreateProject = () => {
   };
 
   const handleCancelClick = () => {
-    const { isProjectStarterValid, isFrameworksSelected } = projectStore;
     const {
       showSettingLoad,
       showProjectStarter,
@@ -201,7 +200,11 @@ const CreateProject = () => {
       showFrameworkSelector ||
       showVariantSelector;
 
-    if (isProjectStarterValid || isFrameworksSelected || anySectionActive) {
+    if (
+      projectStore.isProjectStarterValid ||
+      projectStore.isFrameworksSelected ||
+      anySectionActive
+    ) {
       uiStore.showModal("cancel", "프로젝트 생성을 취소하시겠습니까?");
     } else {
       navigateToPath("/project/project-list");
