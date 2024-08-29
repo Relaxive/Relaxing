@@ -260,18 +260,6 @@ export const ButtonContainer = styled.div`
   z-index: 10;
 `;
 
-export const ToggleSectionAction = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin-bottom: 1.25rem;
-  border-radius: ${({ theme }) => theme.borderRadius.small};
-  background-color: ${({ theme }) => theme.colors.deepBlue};
-  ${commonBoxShadow}
-
-  transition: background-color 0.5s,
-`;
-
 export const SettingLoadContainer = styled.div`
   position: relative;
   display: flex;

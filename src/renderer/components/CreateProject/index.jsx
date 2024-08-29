@@ -8,7 +8,6 @@ import {
   processProjectData
 } from "@utils/projectUtils";
 import {
-  ToggleSectionAction,
   PageContentContainer,
   ButtonContainer
 } from "@public/style/Project.styles";
@@ -273,73 +272,61 @@ const CreateProject = () => {
       </ButtonContainer>
       <div className="toggle-layout">
         <h1>Create Project</h1>
-        <ToggleSectionAction>
-          <ToggleSection
-            title="Setting Load"
-            isActive={sections.showSettingLoad}
-            onToggle={() => toggleSection("showSettingLoad")}
-            isVisible={true}
-          >
-            <SettingLoad />
-          </ToggleSection>
-        </ToggleSectionAction>
-        <ToggleSectionAction>
-          <ToggleSection
-            title="Project Starter"
-            isActive={sections.showProjectStarter}
-            onToggle={() => toggleSection("showProjectStarter")}
-            isVisible={selectedSettingOption}
-          >
-            <ProjectStarter />
-          </ToggleSection>
-        </ToggleSectionAction>
-        <ToggleSectionAction>
-          <ToggleSection
-            title="Framework Selector"
-            isActive={sections.showFrameworkSelector}
-            onToggle={() => toggleSection("showFrameworkSelector")}
-            isVisible={
-              selectedSettingOption === "userDefined" &&
-              selectedPackageManager &&
-              projectName &&
-              path
-            }
-          >
-            <FrameworkSelector
-              selectedFrameworkIndex={selectedFrameworkIndex}
-            />
-          </ToggleSection>
-        </ToggleSectionAction>
-        <ToggleSectionAction>
-          <ToggleSection
-            title="Variant Selector"
-            isActive={sections.showVariantSelector}
-            onToggle={() => toggleSection("showVariantSelector")}
-            isVisible={selectedFrameworkIndex !== null}
-          >
-            <VariantSelector
-              selectedFrameworkIndex={selectedFrameworkIndex}
-              setSelectedVariantIndex={setSelectedVariantIndex}
-              setSelectedOptionIndex={setSelectedOptionIndex}
-            />
-          </ToggleSection>
-        </ToggleSectionAction>
-        <ToggleSectionAction>
-          <ToggleSection
-            title="Dependencies Selector"
-            isActive={sections.showDependenciesSelector}
-            onToggle={() => toggleSection("showDependenciesSelector")}
-            isVisible={
-              selectedFrameworkIndex !== null &&
-              setSelectedVariantIndex &&
-              setSelectedOptionIndex
-            }
-          >
-            <DependenciesSelector
-              selectedDependenciesIndex={selectedDependenciesIndex}
-            />
-          </ToggleSection>
-        </ToggleSectionAction>
+        <ToggleSection
+          title="Setting Load"
+          isActive={sections.showSettingLoad}
+          onToggle={() => toggleSection("showSettingLoad")}
+          isVisible={true}
+        >
+          <SettingLoad />
+        </ToggleSection>
+        <ToggleSection
+          title="Project Starter"
+          isActive={sections.showProjectStarter}
+          onToggle={() => toggleSection("showProjectStarter")}
+          isVisible={selectedSettingOption}
+        >
+          <ProjectStarter />
+        </ToggleSection>
+        <ToggleSection
+          title="Framework Selector"
+          isActive={sections.showFrameworkSelector}
+          onToggle={() => toggleSection("showFrameworkSelector")}
+          isVisible={
+            selectedSettingOption === "userDefined" &&
+            selectedPackageManager &&
+            projectName &&
+            path
+          }
+        >
+          <FrameworkSelector selectedFrameworkIndex={selectedFrameworkIndex} />
+        </ToggleSection>
+        <ToggleSection
+          title="Variant Selector"
+          isActive={sections.showVariantSelector}
+          onToggle={() => toggleSection("showVariantSelector")}
+          isVisible={selectedFrameworkIndex !== null}
+        >
+          <VariantSelector
+            selectedFrameworkIndex={selectedFrameworkIndex}
+            setSelectedVariantIndex={setSelectedVariantIndex}
+            setSelectedOptionIndex={setSelectedOptionIndex}
+          />
+        </ToggleSection>
+        <ToggleSection
+          title="Dependencies Selector"
+          isActive={sections.showDependenciesSelector}
+          onToggle={() => toggleSection("showDependenciesSelector")}
+          isVisible={
+            selectedFrameworkIndex !== null &&
+            setSelectedVariantIndex &&
+            setSelectedOptionIndex
+          }
+        >
+          <DependenciesSelector
+            selectedDependenciesIndex={selectedDependenciesIndex}
+          />
+        </ToggleSection>
       </div>
 
       {isModalOpen &&
