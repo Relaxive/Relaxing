@@ -1,3 +1,4 @@
+import { spawn } from "child_process";
 import GlobalStyle from "./GlobalStyles";
 
 export const theme = {
@@ -30,6 +31,9 @@ export const theme = {
     mainScroll: "#f7f7f7",
     subScroll: "#88b1ff",
     opacity: "rgba(51, 51, 51, 0.9)"
+  },
+  spacing: {
+    calc_5rem: "calc(100% - 5rem)"
   },
   breakpoints: {
     smallToMedium: "(min-width: 600px) and (max-width: 1200px)",

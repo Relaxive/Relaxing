@@ -39,7 +39,7 @@ const ProjectStarter = () => {
 
   const packageManagers = optionConfig.packageManagers;
 
-  const handleUploadClick = async () => {
+  const handlePathUpload = async () => {
     try {
       const selectedPath = await window.api.selectFolder();
       if (selectedPath) {
@@ -97,7 +97,7 @@ const ProjectStarter = () => {
           readOnly
           placeholder="/root/folder/path... click the upload button... "
         />
-        <UploadButton variant={"active"} onClick={handleUploadClick}>
+        <UploadButton variant={"active"} onClick={handlePathUpload}>
           업로드
         </UploadButton>
       </PathInputContainer>
