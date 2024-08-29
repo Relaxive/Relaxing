@@ -33,12 +33,28 @@ const SectionContainer = styled.div.withConfig({
     max-height 0.5s ease;
 `;
 
-const ToggleSection = ({ title, isActive, onToggle, isVisible, children }) => {
+const ToggleSection = ({
+  title,
+  description,
+  isComplete,
+  isActive,
+  onToggle,
+  isVisible,
+  children
+}) => {
   return (
     <ToggleSectionAction isOpen={isActive}>
       <SectionContainer isVisible={isVisible}>
-        <SectionTitle isActive={isActive} onClick={onToggle}>
-          <span>{title}</span>
+        <SectionTitle
+          isActive={isActive}
+          isComplete={isComplete}
+          onClick={onToggle}
+        >
+          <div className="title">
+            <span>{title}</span>
+            {!isActive || <span className="description">{description}</span>}
+          </div>
+
           <img src={icons.arrowIcon} alt="Arrow Icon" />
         </SectionTitle>
         {isActive && children}

@@ -91,7 +91,12 @@ const ProjectStarter = () => {
   return (
     <ProjectStarterContainer>
       <PathInputContainer>
-        <PathInput type="text" value={path} readOnly />
+        <PathInput
+          type="text"
+          value={path}
+          readOnly
+          placeholder="/root/folder/path... click the upload button... "
+        />
         <UploadButton variant={"active"} onClick={handleUploadClick}>
           업로드
         </UploadButton>
@@ -106,7 +111,7 @@ const ProjectStarter = () => {
         </div>
       </DirectoryListContainer>
       <ProjectNameInput
-        placeholder="프로젝트 이름을 입력하세요..."
+        placeholder="Please enter the project name..."
         value={projectName}
         onChange={handleProjectNameChange}
       />

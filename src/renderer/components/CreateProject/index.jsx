@@ -116,6 +116,14 @@ const CreateProject = () => {
       selectedOptionIndex !== null
   });
 
+  const isSettingLoadComplete = !!selectedSettingOption;
+  const isProjectStarterComplete =
+    !!path && !!projectName && !!selectedPackageManager;
+  const isFrameworkSelectorComplete =
+    isFrameworksSelected && selectedFrameworkIndex !== null;
+  const isVariantSelectorComplete = selectedOptionIndex !== null;
+  const isDependenciesSelectorComplete = selectedDependenciesIndex !== null;
+
   useEffect(() => {
     const visibilitySettings = isSectionVisible();
     setSectionsVisibility(visibilitySettings);
@@ -273,25 +281,31 @@ const CreateProject = () => {
       <div className="toggle-layout">
         <h1>Create Project</h1>
         <ToggleSection
-          title="Setting Load"
+          title="1. Setting Load"
+          description="Select either ' Custom Project Creation ' or ' One-Time Project Creation '"
           isActive={sections.showSettingLoad}
           onToggle={() => toggleSection("showSettingLoad")}
+          isComplete={isSettingLoadComplete}
           isVisible={true}
         >
           <SettingLoad />
         </ToggleSection>
         <ToggleSection
-          title="Project Starter"
+          title="2. Project Starter"
+          description="Please Target directory path & Project name"
           isActive={sections.showProjectStarter}
           onToggle={() => toggleSection("showProjectStarter")}
+          isComplete={isProjectStarterComplete}
           isVisible={selectedSettingOption}
         >
           <ProjectStarter />
         </ToggleSection>
         <ToggleSection
-          title="Framework Selector"
+          title="3. Framework Selector"
+          description="Select a framework"
           isActive={sections.showFrameworkSelector}
           onToggle={() => toggleSection("showFrameworkSelector")}
+          isComplete={isFrameworkSelectorComplete}
           isVisible={
             selectedSettingOption === "userDefined" &&
             selectedPackageManager &&
@@ -302,9 +316,11 @@ const CreateProject = () => {
           <FrameworkSelector selectedFrameworkIndex={selectedFrameworkIndex} />
         </ToggleSection>
         <ToggleSection
-          title="Variant Selector"
+          title="4. Variant Selector"
+          description="Select a variant"
           isActive={sections.showVariantSelector}
           onToggle={() => toggleSection("showVariantSelector")}
+          isComplete={isVariantSelectorComplete}
           isVisible={selectedFrameworkIndex !== null}
         >
           <VariantSelector
@@ -314,9 +330,11 @@ const CreateProject = () => {
           />
         </ToggleSection>
         <ToggleSection
-          title="Dependencies Selector"
+          title="5. [option] Dependencies Selector"
+          description="Please search for and add the dependency package(s)"
           isActive={sections.showDependenciesSelector}
           onToggle={() => toggleSection("showDependenciesSelector")}
+          isComplete={isDependenciesSelectorComplete}
           isVisible={
             selectedFrameworkIndex !== null &&
             setSelectedVariantIndex &&
