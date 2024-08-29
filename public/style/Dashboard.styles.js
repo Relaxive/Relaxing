@@ -99,7 +99,7 @@ export const ProjectControllerContainer = styled.div.withConfig({
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 20%;
+  width: 25%;
   height: 9.375rem;
   border-radius: ${({ theme }) => theme.borderRadius.sub};
   box-shadow: ${({ theme }) => theme.colors.opacity};
