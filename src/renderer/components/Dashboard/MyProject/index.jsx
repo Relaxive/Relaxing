@@ -5,28 +5,22 @@ function getIconByFileType(type, path) {
   if (type === "folder") return icons.folderLineIcon;
 
   const extension = path.split(".").pop().toLowerCase();
-  switch (extension) {
-    case "vue":
-      return icons.vueIcon;
-    case "jsx":
-    case "tsx":
-      return icons.reactIcon;
-    case "js":
-      return icons.jsIcon;
-    case "ts":
-      return icons.tsIcon;
-    case "css":
-      return icons.cssIcon;
-    case "json":
-      return icons.jsonIcon;
-    case "svg":
-    case "png":
-    case "jpg":
-    case "gif":
-      return icons.imgIcon;
-    default:
-      return icons.fileIcon;
-  }
+
+  const iconMap = {
+    vue: icons.vueIcon,
+    jsx: icons.reactIcon,
+    tsx: icons.reactIcon,
+    js: icons.jsIcon,
+    ts: icons.tsIcon,
+    css: icons.cssIcon,
+    json: icons.jsonIcon,
+    svg: icons.imgIcon,
+    png: icons.imgIcon,
+    jpg: icons.imgIcon,
+    gif: icons.imgIcon
+  };
+
+  return iconMap[extension] || icons.fileIcon;
 }
 
 const sortItems = items => {
@@ -46,16 +40,15 @@ const updateFolderStructure = (
     return { ...folderStructure, children: updatedChildren };
   }
 
-  return {
-    ...folderStructure,
-    children: folderStructure.children.map(child =>
-      child.name === targetFolderName
-        ? { ...child, children: updatedChildren }
-        : child.children
-          ? updateFolderStructure(child, targetFolderName, updatedChildren)
-          : child
-    )
-  };
+  if (folderStructure.children) {
+    const updatedChildrenList = folderStructure.children.map(child =>
+      updateFolderStructure(child, targetFolderName, updatedChildren)
+    );
+
+    return { ...folderStructure, children: updatedChildrenList };
+  }
+
+  return folderStructure;
 };
 
 const findMatchingFolder = (children, name) => {
