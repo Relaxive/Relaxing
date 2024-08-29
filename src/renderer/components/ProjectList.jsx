@@ -22,7 +22,7 @@ const ProjectList = ({ showModal, showDeleteModal }) => {
         const projectData = await window.api.loadProjectList();
         setProjects(projectData);
       } catch (error) {
-        showModal("프로젝트 목록을 불러오는 중 오류가 발생했습니다.");
+        showModal("error", "프로젝트 목록을 불러오는 중 오류가 발생했습니다.");
         console.error(error);
       }
     };
@@ -35,7 +35,6 @@ const ProjectList = ({ showModal, showDeleteModal }) => {
       const isValidPath = await window.api.checkProjectPath(project.path);
 
       if (!isValidPath) {
-        console.log("모달창", showModal);
         showModal("error", "경로를 찾을 수 없습니다");
         return;
       }
