@@ -116,14 +116,6 @@ const CreateProject = () => {
       selectedOptionIndex !== null
   });
 
-  const isSettingLoadComplete = !!selectedSettingOption;
-  const isProjectStarterComplete =
-    !!path && !!projectName && !!selectedPackageManager;
-  const isFrameworkSelectorComplete =
-    isFrameworksSelected && selectedFrameworkIndex !== null;
-  const isVariantSelectorComplete = selectedOptionIndex !== null;
-  const isDependenciesSelectorComplete = selectedDependenciesIndex !== null;
-
   useEffect(() => {
     const visibilitySettings = isSectionVisible();
     setSectionsVisibility(visibilitySettings);
@@ -285,7 +277,7 @@ const CreateProject = () => {
           description="Select either ' Custom Project Creation ' or ' One-Time Project Creation '"
           isActive={sections.showSettingLoad}
           onToggle={() => toggleSection("showSettingLoad")}
-          isComplete={isSettingLoadComplete}
+          isComplete={selectedSettingOption}
           isVisible={true}
         >
           <SettingLoad />
@@ -295,7 +287,7 @@ const CreateProject = () => {
           description="Please Target directory path & Project name"
           isActive={sections.showProjectStarter}
           onToggle={() => toggleSection("showProjectStarter")}
-          isComplete={isProjectStarterComplete}
+          isComplete={projectName && selectedPackageManager && path}
           isVisible={selectedSettingOption}
         >
           <ProjectStarter />
@@ -305,7 +297,7 @@ const CreateProject = () => {
           description="Select a framework"
           isActive={sections.showFrameworkSelector}
           onToggle={() => toggleSection("showFrameworkSelector")}
-          isComplete={isFrameworkSelectorComplete}
+          isComplete={selectedFrameworkIndex !== null}
           isVisible={
             selectedSettingOption === "userDefined" &&
             selectedPackageManager &&
@@ -320,7 +312,7 @@ const CreateProject = () => {
           description="Select a variant"
           isActive={sections.showVariantSelector}
           onToggle={() => toggleSection("showVariantSelector")}
-          isComplete={isVariantSelectorComplete}
+          isComplete={selectedOptionIndex !== null}
           isVisible={selectedFrameworkIndex !== null}
         >
           <VariantSelector
@@ -334,7 +326,7 @@ const CreateProject = () => {
           description="Please search for and add the dependency package(s)"
           isActive={sections.showDependenciesSelector}
           onToggle={() => toggleSection("showDependenciesSelector")}
-          isComplete={isDependenciesSelectorComplete}
+          isComplete={selectedDependenciesIndex}
           isVisible={
             selectedFrameworkIndex !== null &&
             setSelectedVariantIndex &&

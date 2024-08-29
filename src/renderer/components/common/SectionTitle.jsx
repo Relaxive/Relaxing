@@ -6,8 +6,7 @@ const SectionTitle = styled.h2.withConfig({
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: ${({ isActive }) =>
-    isActive ? "1.25rem 2.5rem" : "1.25rem 2.5rem"};
+  padding: 1.25rem 2.5rem;
   border-radius: ${({ theme }) => theme.borderRadius.small};
   background-color: ${({ theme, isComplete, isActive }) =>
     isActive
@@ -15,7 +14,7 @@ const SectionTitle = styled.h2.withConfig({
       : isComplete
         ? theme.colors.lighAction
         : theme.colors.gray};
-  box-shadow: ${({ isActive }) => (isActive ? "none" : "none")};
+  box-shadow: none;
   cursor: pointer;
 
   .title {
@@ -28,6 +27,7 @@ const SectionTitle = styled.h2.withConfig({
       font-weight: ${({ isActive }) => (isActive ? "bold" : "normal")};
       font-size: ${({ theme }) => theme.fontSizes.middleLarge};
     }
+
     .description {
       position: relative;
       padding-left: 1.25rem;

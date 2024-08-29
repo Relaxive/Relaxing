@@ -52,7 +52,7 @@ const ToggleSection = ({
         >
           <div className="title">
             <span>{title}</span>
-            {!isActive || <span className="description">{description}</span>}
+            {isActive && <span className="description">{description}</span>}
           </div>
 
           <img src={icons.arrowIcon} alt="Arrow Icon" />
