@@ -20,7 +20,7 @@ const CreateProjectNavigation = () => {
     uiStore.sections.showFrameworkSelector ||
     uiStore.sections.showVariantSelector;
 
-  const handleLogoClick = () => {
+  const handleLogoClick = event => {
     if (
       projectStore.isProjectStarterValid ||
       projectStore.isFrameworksSelected ||

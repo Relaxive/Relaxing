@@ -5,7 +5,7 @@ export const MODAL_TYPES = {
   CANCEL: "cancel",
   CUSTOM_SAVE: "customSave",
   SAVE: "save",
-  Error: "error"
+  ERROR: "error"
 };
 
 export const MESSAGES = {

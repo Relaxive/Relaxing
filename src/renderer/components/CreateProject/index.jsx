@@ -183,7 +183,7 @@ const CreateProject = () => {
       } catch (error) {
         console.error("Error loading project data:", error);
         return {
-          type: MODAL_TYPES.Error,
+          type: MODAL_TYPES.ERROR,
           message: "프로젝트 데이터를 불러오는 중 오류가 발생했습니다."
         };
       }
